@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor en un Celular</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+
+<!-- Encabezado con los iconos -->
+<header>
+    <button onclick="mostrarEditor('html')"><i class="fas fa-code"></i> HTML</button>
+    <button onclick="mostrarEditor('css')"><i class="fas fa-paint-brush"></i> CSS</button>
+    <button onclick="mostrarEditor('js')"><i class="fas fa-code-branch"></i> JavaScript</button>
+</header>
+
+<!-- Maqueta del celular -->
+<div class="phone">
+    <div class="screen">
+        <div class="editor-container">
+            <div id="editor-html" class="editor">
+                <h2>HTML</h2>
+                <textarea id="borrador-html" placeholder="Escribe tu código aquí..."></textarea>
+                <button class="transcribir-btn" onclick="transcribir('html')"><i class="fas fa-file-code"></i> Escribiendo Código HTML</button>
+                <textarea id="codigo-html" readonly></textarea>
+            </div>
+
+            <div id="editor-css" class="editor">
+                <h2>CSS</h2>
+                <textarea id="borrador-css" placeholder="Escribe tu código aquí..."></textarea>
+                <button class="transcribir-btn" onclick="transcribir('css')"><i class="fas fa-file-alt"></i> Escribiendo Código CSS</button>
+                <textarea id="codigo-css" readonly></textarea>
+            </div>
+
+            <div id="editor-js" class="editor">
+                <h2>JavaScript</h2>
+                <textarea id="borrador-js" placeholder="Escribe tu código aquí..."></textarea>
+                <button class="transcribir-btn" onclick="transcribir('js')"><i class="fas fa-file-code"></i> Escribiendo Código JavaScript</button>
+                <textarea id="codigo-js" readonly></textarea>
+            </div>
+        </div>
+
+        <div class="preview">
+            <h4>Vista en Tiempo Real</h4>
+            <iframe id="output"></iframe>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
