@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TalonarioDigital - Acceso</title>
+    <title>TalonarioDigital - Acceso Cliente</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-
-/* --- 🎨 ESTILOS CSS MEJORADOS Y MODERNOS --- */
+/* (Mismos estilos CSS que antes para body, header, .logo, h1, .vista, .input-group, etc.) */
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -48,10 +47,7 @@ h1 {
     margin-top: 10px;
 }
 
-/* --- VISTA DE LOGIN/TALONARIO (CARD ELEGANTE) --- */
-
 .vista {
-    display: none;
     width: 90%;
     max-width: 400px;
     background: #ffffff;
@@ -60,7 +56,6 @@ h1 {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     margin: 20px 0;
 }
-
 .vista h2 {
     text-align: center;
     color: #2c3e50;
@@ -73,12 +68,9 @@ h1 {
     flex-direction: column;
     gap: 15px;
 }
-
-/* Estilo de Inputs con iconos */
 .input-group {
     position: relative;
 }
-
 .input-group i {
     position: absolute;
     left: 15px;
@@ -87,7 +79,6 @@ h1 {
     color: #95a5a6;
     font-size: 1em;
 }
-
 .vista input[type="email"], 
 .vista input[type="password"],
 .vista input[type="text"],
@@ -100,7 +91,6 @@ h1 {
     transition: border-color 0.3s, box-shadow 0.3s;
     box-sizing: border-box;
 }
-
 .vista input:focus {
     border-color: #1e90ff;
     box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
@@ -124,25 +114,6 @@ h1 {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-
-#toggleAuth, #olvidoContrasena, #volverLogin {
-    background: none;
-    color: #1e90ff;
-    border: none;
-    font-size: 0.9em;
-    margin-top: 15px;
-    cursor: pointer;
-    text-decoration: underline;
-    text-align: center;
-    padding: 5px;
-    transition: color 0.2s;
-}
-
-#toggleAuth:hover, #olvidoContrasena:hover, #volverLogin:hover {
-    color: #007bff;
-}
-
-/* Estilos para notificaciones */
 .notificacion {
     position: fixed;
     top: 20px;
@@ -157,28 +128,18 @@ h1 {
     animation: slideIn 0.5s ease forwards, slideOut 0.5s ease 2.5s forwards;
     font-weight: 600;
 }
-
-/* Ocultar el icono y el boleto del header en el login para simplicidad visual */
-.icono {
-    display: none; 
+.enlace-vendedor {
+    text-align: center;
+    margin-top: 15px;
 }
-
-/* Media Queries para móviles */
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-    .vista {
-        padding: 20px;
-    }
-    h1 {
-        font-size: 2em;
-    }
-    .notificacion {
-        top: 10px;
-        right: 10px;
-        font-size: 0.9em;
-    }
+.enlace-vendedor a {
+    color: #1e90ff;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+.enlace-vendedor a:hover {
+    text-decoration: underline;
 }
     </style>
     <link rel="icon" id="favicon" type="image/png" href="icono-talonariodigital.png">
@@ -186,61 +147,24 @@ h1 {
 <body>
     <header>
         <div class="logo">
-            <div class="icono">
-                <div class="boleto">
-                    <span class="numero">Rifa</span>
-                    <div class="check"></div>
-                </div>
-            </div>
             <h1>TalonarioDigital</h1>
         </div>
-        <p id="subtituloPrincipal">Verificando sesión...</p>
+        <p id="subtituloPrincipal">Ingresa tu PIN para ver los números disponibles</p>
     </header>
 
-    <div id="authView" class="vista">
-        <h2 id="authTitle">Iniciar Sesión</h2>
-        <form id="authForm">
-            <div class="input-group" id="usernameInputGroup" style="display: none;">
-                <i class="fas fa-user"></i>
-                <input type="text" id="username" placeholder="Nombre de Usuario (Apodo)" autocomplete="username">
-            </div>
-            
+    <div id="pinLoginView" class="vista">
+        <h2>Acceso Cliente</h2>
+        <form id="pinLoginForm">
             <div class="input-group">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="email" placeholder="Correo Electrónico" required autocomplete="email">
-            </div>
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="Contraseña o PIN" required autocomplete="current-password">
-            </div>
-
-            <div class="input-group" id="pinInputGroup" style="display: none;">
                 <i class="fas fa-thumbtack"></i>
-                <input type="number" id="vendedorPin" placeholder="PIN de 5 números (para tus clientes)" minlength="5" maxlength="5" pattern="\d{5}" autocomplete="off">
+                <input type="number" id="pinInput" placeholder="PIN de 5 números del Vendedor" required minlength="5" maxlength="5" pattern="\d{5}" autocomplete="off">
             </div>
-            
-            <div class="input-group" id="adminCodeInputGroup">
-                <i class="fas fa-key"></i>
-                <input type="password" id="adminCode" placeholder="Código de Vendedor (Solo Admin)" autocomplete="off">
-            </div>
-            
-            <button type="submit" id="authSubmitBtn">Acceder</button>
+            <button type="submit">Ver Talonario</button>
         </form>
-        <button id="toggleAuth">¿No tienes cuenta? Regístrate</button>
-        <button id="olvidoContrasena">¿Olvidaste tu Contraseña?</button> 
     </div>
     
-    <div id="recuperacionView" class="vista" style="display: none;">
-        <h2>Recuperar Contraseña</h2>
-        <form id="recuperacionForm">
-             <p style="text-align: center; color: #34495e; margin-bottom: 20px;">Introduce tu correo electrónico para enviarte un enlace de restablecimiento.</p>
-            <div class="input-group">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="recuperacionEmail" placeholder="Correo Electrónico" required>
-            </div>
-            <button type="submit" id="recuperacionSubmitBtn">Enviar Enlace</button>
-        </form>
-        <button id="volverLogin">Volver al Login</button>
+    <div class="enlace-vendedor">
+        <a href="vendedor_login.html">Soy Vendedor / Administrador</a>
     </div>
 
     <div id="notificacion" class="notificacion" style="display: none;">
@@ -250,17 +174,8 @@ h1 {
     
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import { 
-        getAuth, 
-        signInWithEmailAndPassword, 
-        createUserWithEmailAndPassword, 
-        sendPasswordResetEmail,
-        updateProfile,
-        onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
-    
-    // 🛑 NUEVAS IMPORTACIONES PARA GUARDAR EL PIN EN FIRESTORE
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 
 
     // Tu configuración de Firebase (¡Asegúrate de que esta sea la real!)
@@ -277,13 +192,12 @@ h1 {
     // Inicializar Firebase y Auth
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app); 
-    const db = getFirestore(app); // ⬅️ Inicializar Firestore
+    const db = getFirestore(app); 
     
-    // 🛑 CRÍTICO: DEFINE TU CÓDIGO SECRETO AQUÍ (Solo para el acceso de gestión)
-    const VENDEDOR_CODE_SECRETO = "RIFA2025"; 
 
     // Función de notificación simplificada (se mantiene)
     function mostrarNotificacion(mensaje) {
+        // ... (misma lógica de notificación)
         const notificacion = document.getElementById('notificacion');
         const mensajeNotificacion = document.getElementById('mensajeNotificacion');
         notificacion.style.background = mensaje.includes('Error') || mensaje.includes('⚠️') ? '#ff4757' : '#00ff7f';
@@ -298,184 +212,64 @@ h1 {
     }
 
 
-    function setupAuthListeners() {
-        // Elementos de la vista de Autenticación
-        const authView = document.getElementById('authView'); 
-        const authForm = document.getElementById('authForm');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const usernameInput = document.getElementById('username'); 
-        const usernameInputGroup = document.getElementById('usernameInputGroup'); 
-        const toggleAuthBtn = document.getElementById('toggleAuth');
-        const authTitle = document.getElementById('authTitle');
-        const authSubmitBtn = document.getElementById('authSubmitBtn');
-        const olvidoContrasenaBtn = document.getElementById('olvidoContrasena');
-        const subtituloPrincipal = document.getElementById('subtituloPrincipal');
-        
-        // 🛑 ELEMENTOS PIN Y ADMIN CODE
-        const adminCodeInput = document.getElementById('adminCode');
-        const adminCodeInputGroup = document.getElementById('adminCodeInputGroup');
-        const vendedorPinInput = document.getElementById('vendedorPin');
-        const pinInputGroup = document.getElementById('pinInputGroup');
-        
-        // Elementos de la vista de Recuperación
-        const recuperacionView = document.getElementById('recuperacionView');
-        const recuperacionForm = document.getElementById('recuperacionForm');
-        const recuperacionEmailInput = document.getElementById('recuperacionEmail');
-        const volverLoginBtn = document.getElementById('volverLogin');
-        
-        let isLogin = true;
+    const pinLoginForm = document.getElementById('pinLoginForm');
+    const pinInput = document.getElementById('pinInput');
 
-        // --- MANEJO DE VISTAS ---
+    pinLoginForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const pin = pinInput.value.trim();
 
-        function mostrarAuthView() {
-            recuperacionView.style.display = 'none';
-            authView.style.display = 'block';
-            subtituloPrincipal.textContent = 'Inicia sesión para gestionar o apartar números.';
+        if (pin.length !== 5) {
+            mostrarNotificacion(`⚠️ Error: El PIN debe tener exactamente 5 números.`);
+            return;
         }
-        
-        // ... (Tu función mostrarRecuperacionView se mantiene) ...
 
-        olvidoContrasenaBtn.onclick = () => { /* ... lógica ... */ };
-        volverLoginBtn.onclick = () => { /* ... lógica ... */ };
-        olvidoContrasenaBtn.onclick = mostrarRecuperacionView;
-        volverLoginBtn.onclick = mostrarAuthView;
+        try {
+            // 1. Buscar en Firestore el vendedor asociado a este PIN
+            const pinDocRef = doc(db, "vendedoresPINs", pin);
+            const pinDoc = await getDoc(pinDocRef);
 
-        // --- LÓGICA DE LOGIN/REGISTRO TOGGLE ---
+            if (!pinDoc.exists()) {
+                mostrarNotificacion(`⚠️ Error: PIN no encontrado. Verifica el código.`);
+                return;
+            }
 
-        toggleAuthBtn.onclick = () => {
-            isLogin = !isLogin;
-            authTitle.textContent = isLogin ? 'Iniciar Sesión' : 'Registrarse';
-            authSubmitBtn.textContent = isLogin ? 'Acceder' : 'Crear Cuenta';
-            toggleAuthBtn.textContent = isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia Sesión';
+            const vendedorData = pinDoc.data();
+            const email = vendedorData.vendedorEmail;
+            const password = vendedorData.vendedorPassword; 
             
-            // Mostrar/Ocultar campos según la vista
-            usernameInputGroup.style.display = isLogin ? 'none' : 'flex';
-            usernameInput.required = !isLogin; 
-            usernameInput.value = '';
+            // 2. Usar el email y password del vendedor para autenticar al cliente
+            await signInWithEmailAndPassword(auth, email, password);
 
-            // 🛑 PIN solo en REGISTRO
-            pinInputGroup.style.display = isLogin ? 'none' : 'flex';
-            vendedorPinInput.required = !isLogin;
+            // 3. Autenticación exitosa, redirigir al cliente
+            // Guardamos el PIN en sessionStorage para que cliente.html sepa qué vendedor está mirando
+            sessionStorage.setItem('vendedorPIN', pin);
+            mostrarNotificacion(`¡Bienvenido al talonario de ${vendedorData.vendedorDisplayName}!`);
+            window.location.href = 'cliente.html';
 
-            // 🛑 CÓDIGO ADMIN solo en LOGIN
-            adminCodeInputGroup.style.display = isLogin ? 'flex' : 'none';
-        };
-        
-        // Asegurarse de que el campo de vendedor se vea al inicio
-        adminCodeInputGroup.style.display = 'flex';
-
-
-        authForm.onsubmit = async (e) => {
-            e.preventDefault();
-            const email = emailInput.value;
-            const password = passwordInput.value;
-            const username = usernameInput.value.trim(); 
-
-            try {
-                if (isLogin) {
-                    // --- LOGIN ---
-                    const adminCode = adminCodeInput.value.trim();
-                    await signInWithEmailAndPassword(auth, email, password);
-                    
-                    // LÓGICA CRÍTICA DE REDIRECCIÓN (Vendedor vs. Cliente)
-                    if (adminCode === VENDEDOR_CODE_SECRETO) {
-                        // Es el Vendedor (Tú)
-                        mostrarNotificacion("¡Bienvenido, Administrador!");
-                        window.location.href = 'talonario.html'; // ⬅️ VISTA DE GESTIÓN
-                    } else {
-                        // Es el Cliente
-                        mostrarNotificacion("¡Bienvenido! Redirigiendo a la vista de cliente...");
-                        window.location.href = 'cliente.html'; // ⬅️ VISTA DE SOLO APARTADO
-                    }
-                    
-                } else {
-                    // --- REGISTRO ---
-                    const pin = vendedorPinInput.value.trim();
-                    if (pin.length !== 5) {
-                        mostrarNotificacion(`⚠️ Error: El PIN debe tener exactamente 5 números.`);
-                        return; 
-                    }
-                    if (username.length < 3) {
-                        mostrarNotificacion(`⚠️ Error: El Nombre de Usuario debe tener al menos 3 caracteres.`);
-                        return;
-                    }
-
-                    // 1. Crear usuario en Auth
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    const user = userCredential.user;
-                    
-                    // 2. Actualizar el perfil con el nombre de usuario (para el chat)
-                    await updateProfile(user, {
-                        displayName: username
-                    });
-                    
-                    // 3. 🛑 GUARDAR EL PIN Y DATOS en Firestore para la búsqueda de clientes
-                    const pinRef = doc(db, "vendedoresPINs", pin);
-                    await setDoc(pinRef, {
-                        vendedorUID: user.uid,
-                        vendedorEmail: email,
-                        vendedorDisplayName: username, // ⬅️ Nombre de usuario
-                        vendedorPIN: pin,
-                        vendedorPassword: password // Se usa para que el cliente pueda iniciar sesión con el PIN
-                    });
-                    
-                    mostrarNotificacion("¡Registro exitoso! Iniciando sesión...");
-                    window.location.href = 'talonario.html'; // Redirige al panel de gestión
-                }
-            } catch (error) {
-                // Manejo de errores
-                let msg = 'Error desconocido. Verifica tu conexión.';
-                if (error.code === 'auth/email-already-in-use') {
-                    msg = 'El correo ya está en uso. ¡Intenta iniciar sesión!';
-                } else if (error.code === 'auth/invalid-email') {
-                    msg = 'Correo inválido.';
-                } else if (error.code === 'auth/weak-password') {
-                    msg = 'Contraseña débil (mín. 6 caracteres).';
-                } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-                    msg = 'Credenciales incorrectas.';
-                } 
-                mostrarNotificacion(`⚠️ Error: ${msg}`);
-            }
-        };
-        
-        // --- LÓGICA DE RECUPERACIÓN DE CONTRASEÑA ---
-
-        recuperacionForm.onsubmit = async (e) => {
-            e.preventDefault();
-            const email = recuperacionEmailInput.value;
-
-            try {
-                await sendPasswordResetEmail(auth, email);
-                mostrarNotificacion(`✅ Enlace enviado a ${email}. Revisa tu bandeja de entrada (y SPAM).`);
-                mostrarAuthView(); // Volver al login
-            } catch (error) {
-                let msg = 'Error al intentar enviar el enlace.';
-                if (error.code === 'auth/invalid-email') {
-                    msg = 'Correo inválido.';
-                } else if (error.code === 'auth/user-not-found') {
-                    msg = 'Usuario no encontrado. Verifica el correo e intenta de nuevo.';
-                }
-                mostrarNotificacion(`⚠️ Error: ${msg}`);
-            }
-        };
-
-        // --- ESCUCHA DE AUTENTICACIÓN (ANTI-PARPADEO) ---
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                 // Si el usuario ya está logueado y regresa al index, lo enviamos por defecto a la vista de cliente.
-                 // Si quiere ser Admin, debe cerrar sesión e ingresar el código.
-                 window.location.href = 'cliente.html'; 
+        } catch (error) {
+            let msg = 'Error desconocido al acceder. Intenta de nuevo.';
+            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                msg = 'Error de autenticación. El PIN podría ser incorrecto.';
+            } 
+            mostrarNotificacion(`⚠️ Error: ${msg}`);
+            console.error(error);
+        }
+    };
+    
+    // 🛑 ESCUCHA DE AUTENTICACIÓN: Si el usuario ya está logueado, redirigir a donde corresponda.
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // Si ya hay sesión, por defecto se asume que es un Vendedor o alguien que está volviendo.
+            // Para mantener la seguridad, redirigimos al login de Vendedor, donde pueden re-introducir el código
+            // o los enviamos a la vista de cliente si ya tienen el PIN en el sessionStorage
+            if(sessionStorage.getItem('vendedorPIN')) {
+                window.location.href = 'cliente.html';
             } else {
-                // Si NO hay usuario, mostramos la vista principal (Login)
-                mostrarAuthView();
+                // Si está logueado pero no tiene PIN, lo enviamos a la página de Vendedor para que se diferencie.
+                window.location.href = 'vendedor_login.html'; 
             }
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        setupAuthListeners();
+        }
     });
 
 </script>
