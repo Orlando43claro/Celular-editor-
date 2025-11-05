@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido - TalonarioDigital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- ESTILOS GENERALES Y FONDO --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Fondo con gradiente atractivo, similar al login */
+            background: linear-gradient(135deg, #84fab0 0%, #1e90ff 100%); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        
+        /* --- CONTENEDOR PRINCIPAL (CARD) --- */
+        .contenedor-principal {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        /* --- TÍTULO --- */
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: clamp(1.8em, 5vw, 2.5em);
+            font-weight: 700;
+        }
+        p {
+            color: #34495e;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+        
+        /* --- BOTONES DE OPCIÓN --- */
+        .opcion {
+            text-decoration: none;
+            display: flex; /* Para alinear ícono y texto */
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+            padding: 18px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .opcion:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Estilo Específico Vendedor (Azul) */
+        #btnVendedor {
+            background: linear-gradient(45deg, #3498db, #1e90ff);
+            color: white;
+        }
+        
+        /* Estilo Específico Cliente (Verde) */
+        #btnCliente {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        .opcion i {
+            font-size: 1.3em;
+        }
+
+        /* Media Query para tamaños pequeños */
+        @media (max-width: 480px) {
+            .contenedor-principal {
+                padding: 30px 20px;
+            }
+            .opcion {
+                font-size: 1em;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <h1>TalonarioDigital</h1>
+        <p>¿Cómo deseas acceder a la aplicación?</p>
+
+        <a id="btnVendedor" class="opcion" href="index.html">
+            <i class="fas fa-user-lock"></i> Soy Vendedor (Administración)
+        </a>
+
+        <a id="btnCliente" class="opcion" href="cliente.html">
+            <i class="fas fa-ticket-alt"></i> Soy Cliente (Apartar Número)
+        </a>
+    </div>
+</body>
+</html>
