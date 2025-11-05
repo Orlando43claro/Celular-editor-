@@ -9,7 +9,6 @@
     
     <style>
 /* --- ESTILOS CSS COMPLETOS --- */
-/* ... (Se mantiene igual) ... */
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #e0eafc, #cfdef3);
@@ -136,6 +135,35 @@ p#subtituloPrincipal {
         text-align: center;
         justify-content: center;
     }
+}
+/* Estilos Específicos para la Vista de PIN */
+#pinVerificationView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 400px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin: 20px 0;
+}
+#pinVerificationView h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+#pinVerificationView p {
+    text-align: center;
+}
+#pinVerificationView button {
+    background: #1e90ff; 
+    color: white; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer;
+    font-weight: 600;
 }
 .controles {
     display: flex;
@@ -708,6 +736,23 @@ td.oculta {
         <p id="subtituloPrincipal">Verificando sesión...</p>
     </header>
 
+    <div id="pinVerificationView" style="display: none;">
+        <h2>Verificación de Acceso</h2>
+        <p style="text-align: center; color: #34495e; margin: 15px 0;">
+            Introduce el PIN de 6 dígitos que te proporcionamos al registrarte.
+        </p>
+        <form id="pinForm" style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+            <input type="text" id="pinInput" placeholder="PIN de 6 dígitos" maxlength="6" required 
+                   style="text-align: center; font-size: 1.5em; letter-spacing: 5px; padding: 10px; width: 200px; border: 1px solid #ccc; border-radius: 5px;">
+            <button type="submit">
+                Verificar PIN
+            </button>
+        </form>
+        <p id="pinError" style="color: #e74c3c; display: none; margin-top: 15px; font-weight: 600;">
+            PIN incorrecto. Intenta de nuevo.
+        </p>
+    </div>
+    
     <div id="talonarioView" style="display: none; width: 100%; max-width: 900px; flex-direction: column; align-items: center;">
         <div class="controles">
             <span id="contadorVendidos">Vendidos: 0/100</span>
@@ -814,7 +859,7 @@ td.oculta {
         collection, 
         doc, 
         getDocs, 
-        getDoc, // <- Importación necesaria para leer el timestamp
+        getDoc, // 💡 CLAVE: Para leer el PIN del usuario
         setDoc, 
         updateDoc, 
         deleteDoc, 
@@ -822,7 +867,7 @@ td.oculta {
         onSnapshot,
         query, 
         where,
-        orderBy, // <- Importación necesaria para ordenar
+        orderBy, 
         limit 
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
     import { 
@@ -863,7 +908,6 @@ td.oculta {
     // ----------------------------
 
     // --- FUNCIONES CRUD DINÁMICAS (DEPENDEN DE uidUsuarioActual) ---
-    
     function obtenerBoletosRef(uid) {
         return collection(db, 'users', uid, 'rifas');
     }
@@ -895,11 +939,10 @@ td.oculta {
         await batch.commit();
     }
     
-    // 🚀 --- FUNCIÓN PARA INICIAR OYENTE DE NOTIFICACIONES DEL CHAT (CLAVE) ---
+    // 🚀 --- FUNCIÓN PARA INICIAR OYENTE DE NOTIFICACIONES DEL CHAT ---
     function iniciarOyenteNotificacionesChat() {
         if (!uidUsuarioActual) return;
         
-        // 1. Detener oyente anterior
         if (unsubscribeChatNotifications) {
             unsubscribeChatNotifications();
             unsubscribeChatNotifications = null;
@@ -911,10 +954,6 @@ td.oculta {
         const metadataRef = doc(db, "users", uidUsuarioActual, "metadata", "chatStatus");
         const chatRef = collection(db, "chats"); 
 
-        console.log(`Estableciendo oyente de notificaciones de chat para UID: ${uidUsuarioActual}`);
-
-        // 2. Establecer oyente en el documento de metadatos del usuario.
-        // Esto se dispara cada vez que el usuario lee el chat y actualiza su timestamp.
         unsubscribeChatNotifications = onSnapshot(metadataRef, async (metadataDoc) => {
             let lastReadTimestamp = null;
 
@@ -922,7 +961,6 @@ td.oculta {
                 lastReadTimestamp = metadataDoc.data().lastReadTimestamp;
             }
 
-            // 3. Obtener el último mensaje del chat global para comparar.
             const qLastMessage = query(chatRef, orderBy("timestamp", "desc"), limit(1));
             const lastMessageSnapshot = await getDocs(qLastMessage);
             
@@ -931,24 +969,20 @@ td.oculta {
             if (!lastMessageSnapshot.empty) {
                 const lastMessage = lastMessageSnapshot.docs[0].data();
                 const lastMessageTimestamp = lastMessage.timestamp;
-                const isMyOwnMessage = lastMessage.uid === uidUsuarioActual; // No te avises a ti mismo
+                const isMyOwnMessage = lastMessage.uid === uidUsuarioActual; 
 
-                // Verificar si el último mensaje es posterior a la última lectura.
                 if (lastMessageTimestamp && lastReadTimestamp) {
-                    // Si el timestamp del mensaje es mayor al timestamp de mi última lectura
                     if (lastMessageTimestamp.toMillis() > lastReadTimestamp.toMillis() && !isMyOwnMessage) {
-                        mensajesNoLeidos = 1; // Basta con saber que hay uno nuevo.
+                        mensajesNoLeidos = 1; 
                     }
                 } 
-                // Si nunca he leído (lastReadTimestamp es null) y no es mi mensaje, hay 1 nuevo.
                 else if (!lastReadTimestamp && !isMyOwnMessage) {
                     mensajesNoLeidos = 1;
                 }
             }
 
-
             if (mensajesNoLeidos > 0) { 
-                badge.textContent = '!'; // O usar la cantidad si decides hacer un query más amplio
+                badge.textContent = '!'; 
                 badge.style.display = 'block';
                 chatButton.classList.add('notificacion-activa');
             } else {
@@ -964,7 +998,7 @@ td.oculta {
     }
 
     
-    // --- FUNCIÓN DE TIEMPO REAL DINÁMICA DE RIFAS (Se mantiene igual) ---
+    // --- FUNCIÓN DE TIEMPO REAL DINÁMICA DE RIFAS ---
     function iniciarOyenteTiempoReal() {
         if (!uidUsuarioActual) return;
         
@@ -974,8 +1008,6 @@ td.oculta {
         }
 
         boletosRef = obtenerBoletosRef(uidUsuarioActual);
-        
-        console.log(`Estableciendo oyente de tiempo real para UID: ${uidUsuarioActual}`);
         
         unsubscribe = onSnapshot(boletosRef, (snapshot) => {
             
@@ -1003,16 +1035,129 @@ td.oculta {
             generarListaBoletos(datosActuales.seleccionados, datosActuales.pagados, datosActuales.datosBoletos); 
             verificarTalonarioCompleto(datosActuales.pagados); 
             
-            console.log('Vista actualizada por evento de Firestore.');
-
         }, (error) => {
             console.error('Error en el oyente de Firestore:', error);
             document.getElementById('talonario').innerHTML = '<p style="color: red;">Error al cargar el talonario: ' + error.message + '</p>';
             mostrarNotificacion('Error de conexión en tiempo real con Firebase.');
         });
     }
+    
+    // 💡 FUNCIÓN DE VERIFICACIÓN Y PROVISIONAMIENTO DE PIN (CLAVE)
+    function setupPinVerification(user) {
+        const pinVerificationView = document.getElementById('pinVerificationView');
+        const talonarioView = document.getElementById('talonarioView');
+        const pinForm = document.getElementById('pinForm');
+        const pinInput = document.getElementById('pinInput');
+        const pinError = document.getElementById('pinError');
+        const subtituloPrincipal = document.getElementById('subtituloPrincipal');
 
-    // --- (Resto de funciones: setupPerfilListeners, setupAuthListeners, etc. se mantienen igual) ---
+        // 1. Mostrar la vista de PIN y ocultar el talonario por defecto
+        talonarioView.style.display = 'none';
+        pinVerificationView.style.display = 'flex';
+        subtituloPrincipal.textContent = `Bienvenido, ${user.displayName || user.email}. Ingresa tu PIN.`;
+        document.getElementById('userInfo').style.display = 'none';
+        
+        // Función auxiliar para CONCEDER ACCESO (se usa al verificar y al provisionar)
+        function grantAccess() {
+            pinVerificationView.style.display = 'none';
+            talonarioView.style.display = 'flex'; 
+            document.getElementById('userInfo').style.display = 'flex'; 
+            subtituloPrincipal.textContent = 'Haz Clic en un número para apartalo, editarlo o pagarlo';
+            
+            // Iniciar oyentes solo si no están activos
+            if (!unsubscribe) iniciarOyenteTiempoReal(); 
+            if (!unsubscribeChatNotifications) iniciarOyenteNotificacionesChat();
+            
+            mostrarNotificacion(`✅ Acceso concedido.`);
+        }
+
+        // Función auxiliar para PROVISIONAR PIN (para usuarios antiguos)
+        async function provisionarPin(user) {
+            const newPin = Math.floor(100000 + Math.random() * 900000).toString(); 
+            const userDocRef = doc(db, "clientes", user.uid);
+            
+            await setDoc(userDocRef, {
+                pin: newPin,
+                email: user.email,
+                nombre: user.displayName || 'Usuario Legacy',
+                acceso_concedido: true 
+            });
+            
+            // Mostrar interfaz de notificación de PIN
+            pinVerificationView.innerHTML = `
+                <h2 style="color: #f39c12;">¡Atención! PIN Asignado</h2>
+                <p style="color: #27ae60; font-size: 1.1em; font-weight: 700;">
+                    Tu cuenta fue creada antes de nuestro sistema de seguridad.
+                </p>
+                <p style="font-size: 2em; color: #1e90ff; font-weight: 900; letter-spacing: 3px;">
+                    ${newPin}
+                </p>
+                <p><strong>Guarda este número inmediatamente.</strong> Úsalo en el futuro para acceder.</p>
+                <button id="pinAceptadoBtn" style="background: #2ecc71; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">
+                    Entendido, Acceder al Talonario
+                </button>
+            `;
+            
+            document.getElementById('pinAceptadoBtn').onclick = () => {
+                grantAccess();
+                mostrarNotificacion(`✅ Nuevo PIN asignado: ${newPin}.`);
+            };
+        }
+        
+        // Chequeo inicial: ¿El usuario ya tiene un PIN guardado en Firestore?
+        (async function checkPinExistence() {
+            try {
+                const userDocSnap = await getDoc(doc(db, "clientes", user.uid));
+
+                if (!userDocSnap.exists() || userDocSnap.data().pin === undefined) {
+                    // ⚠️ USUARIO ANTIGUO DETECTADO: FORZAR PROVISIONAMIENTO DE PIN
+                    await provisionarPin(user);
+                }
+            } catch (error) {
+                console.error("Error en el chequeo inicial de PIN:", error);
+                subtituloPrincipal.textContent = 'Error al verificar la cuenta. Intenta recargar.';
+            }
+        })();
+
+
+        // Lógica de Verificación (para usuarios que ya tienen un PIN)
+        if (pinForm) {
+            pinForm.onsubmit = async (e) => {
+                e.preventDefault();
+                pinError.style.display = 'none';
+                const enteredPin = pinInput.value.trim();
+
+                if (enteredPin.length !== 6) {
+                    pinError.textContent = "El PIN debe tener 6 dígitos.";
+                    pinError.style.display = 'block';
+                    return;
+                }
+
+                try {
+                    const userDocSnap = await getDoc(doc(db, "clientes", user.uid));
+
+                    if (userDocSnap.exists()) {
+                        const correctPin = userDocSnap.data().pin;
+                        
+                        if (enteredPin === correctPin) {
+                            grantAccess();
+                        } else {
+                            pinError.textContent = "PIN incorrecto. Intenta de nuevo.";
+                            pinError.style.display = 'block';
+                        }
+                    } else {
+                        pinError.textContent = "Error: La información del PIN es inconsistente. Intenta recargar.";
+                        pinError.style.display = 'block';
+                    }
+
+                } catch (error) {
+                    console.error("Error al verificar PIN:", error);
+                    pinError.textContent = "Error de conexión o servidor. Intenta de nuevo.";
+                    pinError.style.display = 'block';
+                }
+            };
+        }
+    }
 
     // --- MANEJO DE AUTENTICACIÓN (GUARDIA DE SEGURIDAD) ---
 
@@ -1033,9 +1178,10 @@ td.oculta {
             const userInfo = document.getElementById('userInfo');
             const subtituloPrincipal = document.getElementById('subtituloPrincipal');
             
-            // Ocultar el contenido por defecto
+            // Ocultar contenido y setear estado inicial
             talonarioView.style.display = 'none'; 
             userInfo.style.display = 'none';
+            document.getElementById('pinVerificationView').style.display = 'none'; // Asegurar oculto
             subtituloPrincipal.textContent = 'Verificando sesión...';
 
 
@@ -1043,26 +1189,21 @@ td.oculta {
                 // USUARIO AUTENTICADO
                 uidUsuarioActual = user.uid;
                 
-                // MOSTRAR EL TALONARIO
-                talonarioView.style.display = 'flex'; 
-                
-                userInfo.style.display = 'flex'; // Usar flex para los botones
+                // Detener oyentes (serán iniciados solo después de la verificación del PIN)
+                if (unsubscribe) {
+                    unsubscribe();
+                    unsubscribe = null;
+                }
+                if (unsubscribeChatNotifications) { 
+                    unsubscribeChatNotifications();
+                    unsubscribeChatNotifications = null;
+                }
                 
                 document.getElementById('emailDisplay').textContent = user.email; 
-                
                 setupPerfilListeners(); 
 
-                subtituloPrincipal.textContent = 'Haz Clic en un número para apartalo, editarlo o pagarlo';
-                
-                // 1. Iniciar la escucha de datos de Rifas
-                if (!unsubscribe) {
-                    iniciarOyenteTiempoReal(); 
-                }
-                
-                // 2. Iniciar la escucha de Notificaciones del Chat
-                if (!unsubscribeChatNotifications) { 
-                    iniciarOyenteNotificacionesChat();
-                }
+                // 💡 LLAMAR A LA VERIFICACIÓN DE PIN
+                setupPinVerification(user); 
                 
             } else {
                 // NINGÚN USUARIO: REDIRECCIÓN INMEDIATA
@@ -1085,7 +1226,7 @@ td.oculta {
         });
     }
 
-    // --- (Resto de funciones se mantienen igual) ---
+    // --- (Resto de funciones: handleChangePassword, setupPerfilListeners, generarTalonario, etc. se mantienen igual) ---
 
     async function handleChangePassword(e) {
         e.preventDefault();
@@ -1160,7 +1301,6 @@ td.oculta {
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        console.log('Paso 0: DOM cargado, inicializando TalonarioDigital...');
         
         // Inicialización de filtros
         document.getElementById('filtroTodo').classList.add('activo');
@@ -1401,130 +1541,3 @@ td.oculta {
             card.classList.add('boleto-card', boleto.estado);
             
             const iconoPagado = boleto.estado === 'pagado' ? '<span style="font-size: 1.2em; margin-left: 5px;">💵</span>' : '';
-            
-            card.innerHTML = `
-                <div class="info-numero">
-                    <span>Número **${numeroFormateado}**${iconoPagado}</span>
-                    <span class="info-estado">${boleto.estado}</span>
-                </div>
-                <div class="info-nombre">${datos.nombre}</div>
-            `;
-            
-            listaDiv.appendChild(card);
-        });
-
-        if (todosBoletos.length === 0) {
-            const p = document.createElement('p');
-            p.textContent = 'No hay boletos apartados ni pagados.';
-            p.style.color = '#7f8c8d';
-            p.style.textAlign = 'center';
-            p.style.gridColumn = '1 / -1'; 
-            listaDiv.appendChild(p);
-        }
-    }
-
-    function aplicarFiltro(tipo) {
-        filtroActivo = tipo;
-        const botonesFiltro = document.querySelectorAll('.filtro');
-        botonesFiltro.forEach(btn => btn.classList.remove('activo'));
-        document.getElementById(`filtro${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`).classList.add('activo');
-        
-        generarTalonario(datosActuales.seleccionados, datosActuales.pagados, datosActuales.datosBoletos);
-    }
-
-    function verificarTalonarioCompleto(pagados) {
-        const limpiarBtn = document.getElementById('limpiarTalonario');
-        if (pagados.length === 100) {
-            limpiarBtn.style.display = 'block';
-        } else {
-            limpiarBtn.style.display = 'none';
-        }
-    }
-
-    function inicializarModales() {
-        // --- Modal de Limpieza de Talonario ---
-        const limpiarBtn = document.getElementById('limpiarTalonario');
-        const modalConfirmar = document.getElementById('modalConfirmarLimpieza');
-        const confirmarLimpieza = document.getElementById('confirmarLimpieza');
-        const cancelarLimpieza = document.getElementById('cancelarLimpieza');
-        const cerrarModalConfirmar = document.getElementById('cerrarModalConfirmar');
-
-        limpiarBtn.onclick = function () {
-            modalConfirmar.style.display = 'flex';
-        };
-
-        confirmarLimpieza.onclick = async function () {
-            try {
-                await limpiarTodaColeccion();
-                
-                filtroActivo = 'todo';
-                document.getElementById('filtroTodo').classList.add('activo');
-                document.getElementById('filtroDisponible').classList.remove('activo');
-                document.getElementById('filtroApartado').classList.remove('activo');
-                document.getElementById('filtroPagado').classList.remove('activo');
-                
-                modalConfirmar.style.display = 'none';
-                mostrarNotificacion('¡Talonario limpiado exitosamente! Listo para la nueva rifa.');
-            } catch (error) {
-                console.error('Error al limpiar Firebase:', error);
-                mostrarNotificacion('Error al limpiar el talonario: ' + error.message);
-            }
-        };
-
-        cancelarLimpieza.onclick = function () { modalConfirmar.style.display = 'none'; };
-        cerrarModalConfirmar.onclick = function () { modalConfirmar.style.display = 'none'; };
-        modalConfirmar.onclick = function (e) {
-            if (e.target === modalConfirmar) { modalConfirmar.style.display = 'none'; }
-        };
-        
-        // --- Nuevo Modal de Confirmación de Eliminación ---
-        const modalEliminacion = document.getElementById('modalConfirmarEliminacion');
-        const confirmarEliminacion = document.getElementById('confirmarEliminacion');
-        const cancelarEliminacion = document.getElementById('cancelarEliminacion');
-        const cerrarModalEliminacion = document.getElementById('cerrarModalConfirmarEliminacion');
-
-        confirmarEliminacion.onclick = async function () {
-            if (!numeroBoletoActual) return;
-            
-            try {
-                await eliminarBoleto(numeroBoletoActual); 
-                
-                modalEliminacion.style.display = 'none';
-                mostrarNotificacion(`Boleto ${numeroBoletoActual.padStart(2, '0')} eliminado.`);
-                numeroBoletoActual = null; 
-                
-            } catch (error) {
-                console.error('Error al eliminar en Firebase:', error);
-                mostrarNotificacion('Error al eliminar: ' + error.message);
-            }
-        };
-
-        cancelarEliminacion.onclick = function () { 
-            modalEliminacion.style.display = 'none'; 
-        };
-        cerrarModalEliminacion.onclick = function () { 
-            modalEliminacion.style.display = 'none'; 
-        };
-        modalEliminacion.onclick = function (e) {
-            if (e.target === modalEliminacion) { modalEliminacion.style.display = 'none'; }
-        };
-    }
-
-    function mostrarNotificacion(mensaje) {
-        const notificacion = document.getElementById('notificacion');
-        const mensajeNotificacion = document.getElementById('mensajeNotificacion');
-        notificacion.style.background = mensaje.includes('Error') || mensaje.includes('⚠️') ? '#ff4757' : '#00ff7f';
-        notificacion.style.boxShadow = mensaje.includes('Error') || mensaje.includes('⚠️') ? '0 0 15px rgba(255, 71, 87, 0.7)' : '0 0 15px rgba(0, 255, 127, 0.7)';
-        
-        mensajeNotificacion.textContent = mensaje;
-        // Reiniciar la animación
-        notificacion.style.animation = 'none';
-        notificacion.offsetHeight; 
-        notificacion.style.animation = null; 
-
-        notificacion.style.display = 'block';
-    }
-
-</script>
-</body>
-</html>
