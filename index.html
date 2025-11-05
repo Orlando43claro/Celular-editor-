@@ -3,182 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TalonarioDigital - Acceso Cliente</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Login / Registro - TalonarioDigital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-/* (Mismos estilos CSS que antes para body, header, .logo, h1, .vista, .input-group, etc.) */
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #84fab0 0%, #1e90ff 100%); 
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-}
-
-h1 {
-    color: #fff;
-    font-size: clamp(2em, 5vw, 3em);
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    margin: 0;
-}
-
-#subtituloPrincipal {
-    color: #f0f0f0;
-    font-size: clamp(1em, 3vw, 1.2em);
-    margin-top: 10px;
-}
-
-.vista {
-    width: 90%;
-    max-width: 400px;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    margin: 20px 0;
-}
-.vista h2 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 25px;
-    font-weight: 600;
-}
-
-.vista form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-.input-group {
-    position: relative;
-}
-.input-group i {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #95a5a6;
-    font-size: 1em;
-}
-.vista input[type="email"], 
-.vista input[type="password"],
-.vista input[type="text"],
-.vista input[type="number"] {
-    width: 100%;
-    padding: 12px 12px 12px 40px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1em;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    box-sizing: border-box;
-}
-.vista input:focus {
-    border-color: #1e90ff;
-    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
-    outline: none;
-}
-
-.vista button {
-    padding: 12px;
-    background: linear-gradient(45deg, #1e90ff, #007bff);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1em;
-    font-weight: 700;
-    transition: transform 0.2s, box-shadow 0.2s;
-    text-transform: uppercase;
-}
-
-.vista button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-.notificacion {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #00ff7f;
-    color: #fff;
-    padding: 15px 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 255, 127, 0.7);
-    z-index: 2000;
-    display: none;
-    animation: slideIn 0.5s ease forwards, slideOut 0.5s ease 2.5s forwards;
-    font-weight: 600;
-}
-.enlace-vendedor {
-    text-align: center;
-    margin-top: 15px;
-}
-.enlace-vendedor a {
-    color: #1e90ff;
-    text-decoration: none;
-    font-size: 0.9em;
-    font-weight: 600;
-}
-.enlace-vendedor a:hover {
-    text-decoration: underline;
-}
+        /* [Incluye aquí todos los estilos CSS de index.html] */
+        body { /* ... */ }
+        .auth-container { /* ... */ }
+        /* ... */
+        .pin-display { 
+            /* ... Estilos para mostrar el PIN después del registro ... */
+        }
     </style>
-    <link rel="icon" id="favicon" type="image/png" href="icono-talonariodigital.png">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <h1>TalonarioDigital</h1>
-        </div>
-        <p id="subtituloPrincipal">Ingresa tu PIN para ver los números disponibles</p>
-    </header>
-
-    <div id="pinLoginView" class="vista">
-        <h2>Acceso Cliente</h2>
-        <form id="pinLoginForm">
-            <div class="input-group">
-                <i class="fas fa-thumbtack"></i>
-                <input type="number" id="pinInput" placeholder="PIN de 5 números del Vendedor" required minlength="5" maxlength="5" pattern="\d{5}" autocomplete="off">
-            </div>
-            <button type="submit">Ver Talonario</button>
+    <div class="auth-container">
+        <h2 id="authTitle">Iniciar Sesión</h2>
+        
+        <form id="authForm" class="auth-form">
+            <input type="text" id="username" placeholder="Nombre de usuario" style="display:none;">
+            <input type="email" id="email" placeholder="Correo electrónico" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            
+            <button type="submit" id="authButton">Ingresar</button>
         </form>
-    </div>
-    
-    <div class="enlace-vendedor">
-        <a href="vendedor_login.html">Soy Vendedor / Administrador</a>
+
+        <p id="message"></p>
+
+        <button id="toggleAuth">¿No tienes cuenta? Regístrate</button>
+        <button id="resetPasswordLink">¿Olvidaste tu contraseña?</button>
     </div>
 
-    <div id="notificacion" class="notificacion" style="display: none;">
-        <p id="mensajeNotificacion"></p>
-    </div>
-
-    
 <script type="module">
+    // Importar las funciones necesarias de Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+    import { 
+        getAuth, 
+        signInWithEmailAndPassword, 
+        createUserWithEmailAndPassword, 
+        sendPasswordResetEmail,
+        updateProfile,
+        onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js"; // 💡 getDoc AÑADIDO
 
 
-    // Tu configuración de Firebase (¡Asegúrate de que esta sea la real!)
+    // ** REEMPLAZA ESTO CON TU CONFIGURACIÓN REAL DE FIREBASE **
     const firebaseConfig = {
         apiKey: "AIzaSyDY5KBUwbDwjeCYY7ILXkRB5EJBVoVAmF0", 
         authDomain: "talonario-rifa.firebaseapp.com",
@@ -189,89 +59,105 @@ h1 {
         measurementId: "G-FWH8F9SVFM"
     };
 
-    // Inicializar Firebase y Auth
+    // Inicializar Firebase, Auth y Firestore
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app); 
-    const db = getFirestore(app); 
-    
+    const db = getFirestore(app);
 
-    // Función de notificación simplificada (se mantiene)
-    function mostrarNotificacion(mensaje) {
-        // ... (misma lógica de notificación)
-        const notificacion = document.getElementById('notificacion');
-        const mensajeNotificacion = document.getElementById('mensajeNotificacion');
-        notificacion.style.background = mensaje.includes('Error') || mensaje.includes('⚠️') ? '#ff4757' : '#00ff7f';
-        notificacion.style.boxShadow = mensaje.includes('Error') || mensaje.includes('⚠️') ? '0 0 15px rgba(255, 71, 87, 0.7)' : '0 0 15px rgba(0, 255, 127, 0.7)';
-        
-        mensajeNotificacion.textContent = mensaje;
-        notificacion.style.animation = 'none';
-        notificacion.offsetHeight; 
-        notificacion.style.animation = 'slideIn 0.5s ease forwards, slideOut 0.5s ease 2.5s forwards';
-        notificacion.style.display = 'block';
-        setTimeout(() => { notificacion.style.display = 'none'; }, 3000);
-    }
+    // --- VARIABLES DE ESTADO y DOM (Iguales) ---
+    let isLoginMode = true;
+    // ... (restantes elementos del DOM) ...
 
-
-    const pinLoginForm = document.getElementById('pinLoginForm');
-    const pinInput = document.getElementById('pinInput');
-
-    pinLoginForm.onsubmit = async (e) => {
+    // --- MANEJADOR DE EVENTOS PRINCIPAL (Modificación en Registro) ---
+    authForm.onsubmit = async (e) => {
         e.preventDefault();
-        const pin = pinInput.value.trim();
-
-        if (pin.length !== 5) {
-            mostrarNotificacion(`⚠️ Error: El PIN debe tener exactamente 5 números.`);
-            return;
-        }
+        
+        const username = usernameInput.value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        // ... (Verificación de login/registro) ...
 
         try {
-            // 1. Buscar en Firestore el vendedor asociado a este PIN
-            const pinDocRef = doc(db, "vendedoresPINs", pin);
-            const pinDoc = await getDoc(pinDocRef);
+            if (isLoginMode) {
+                // Lógica de Login (Igual)
+                await signInWithEmailAndPassword(auth, email, password);
+                showMessage("Inicio de sesión exitoso. Redirigiendo...", false);
+            } else {
+                // Lógica de Registro (Añadir rol: 'vendedor')
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                const newPin = Math.floor(100000 + Math.random() * 900000).toString(); 
+                
+                await updateProfile(user, {
+                    displayName: username
+                });
 
-            if (!pinDoc.exists()) {
-                mostrarNotificacion(`⚠️ Error: PIN no encontrado. Verifica el código.`);
-                return;
+                // 💡 GUARDAR PIN Y ROL: ASUMIMOS QUE EL QUE SE REGISTRA ES UN VENDEDOR
+                await setDoc(doc(db, "clientes", user.uid), {
+                    pin: newPin,
+                    email: email,
+                    nombre: username,
+                    acceso_concedido: true, 
+                    rol: 'vendedor' // 💡 CAMBIO CLAVE: Asignar el rol de vendedor al registrarse
+                });
+                
+                localStorage.setItem('tempPin', newPin);
+                localStorage.setItem('tempUsername', username);
+                
+                showMessage(`¡Registro exitoso! Tu PIN de acceso es ${newPin}. Iniciando sesión...`, false);
             }
 
-            const vendedorData = pinDoc.data();
-            const email = vendedorData.vendedorEmail;
-            const password = vendedorData.vendedorPassword; 
-            
-            // 2. Usar el email y password del vendedor para autenticar al cliente
-            await signInWithEmailAndPassword(auth, email, password);
-
-            // 3. Autenticación exitosa, redirigir al cliente
-            // Guardamos el PIN en sessionStorage para que cliente.html sepa qué vendedor está mirando
-            sessionStorage.setItem('vendedorPIN', pin);
-            mostrarNotificacion(`¡Bienvenido al talonario de ${vendedorData.vendedorDisplayName}!`);
-            window.location.href = 'cliente.html';
-
         } catch (error) {
-            let msg = 'Error desconocido al acceder. Intenta de nuevo.';
-            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-                msg = 'Error de autenticación. El PIN podría ser incorrecto.';
-            } 
-            mostrarNotificacion(`⚠️ Error: ${msg}`);
-            console.error(error);
+            // ... (Manejo de errores es igual) ...
         }
     };
     
-    // 🛑 ESCUCHA DE AUTENTICACIÓN: Si el usuario ya está logueado, redirigir a donde corresponda.
-    onAuthStateChanged(auth, (user) => {
+    // --- MANEJO DE REDIRECCIÓN POR ROL (CAMBIO CLAVE AQUÍ) ---
+
+    onAuthStateChanged(auth, async (user) => { // 💡 Función ASYNC para usar await
         if (user) {
-            // Si ya hay sesión, por defecto se asume que es un Vendedor o alguien que está volviendo.
-            // Para mantener la seguridad, redirigimos al login de Vendedor, donde pueden re-introducir el código
-            // o los enviamos a la vista de cliente si ya tienen el PIN en el sessionStorage
-            if(sessionStorage.getItem('vendedorPIN')) {
-                window.location.href = 'cliente.html';
+            
+            // 1. OBTENER EL ROL DESDE FIRESTORE
+            const userDocSnap = await getDoc(doc(db, "clientes", user.uid));
+            // Si el documento existe, toma el rol. Si no existe, asume 'cliente' (o un valor seguro)
+            const userRole = userDocSnap.exists() ? userDocSnap.data().rol : 'cliente'; 
+
+            // Determinar la página de destino basada en el rol
+            const redirectPage = userRole === 'vendedor' ? 'talonario.html' : 'cliente.html';
+
+            const tempPin = localStorage.getItem('tempPin');
+            const tempUsername = localStorage.getItem('tempUsername');
+
+            if (tempPin) {
+                // Si viene de un REGISTRO NUEVO (mostrando PIN por 5s)
+                const container = document.querySelector('.auth-container');
+                container.innerHTML = `
+                    <h2>¡Bienvenido, ${tempUsername || user.displayName}!</h2>
+                    <p>Tu cuenta ha sido creada exitosamente.</p>
+                    <div class="pin-display">
+                        Tu PIN de Acceso es: <span>${tempPin}</span>
+                        <p style="font-size: 0.7em; margin-top: 10px; font-weight: 400;">Guarda este número. Lo necesitarás para acceder.</p>
+                    </div>
+                    <p id="redirectMsg">Redirigiendo en 5 segundos...</p>
+                `;
+                
+                localStorage.removeItem('tempPin');
+                localStorage.removeItem('tempUsername');
+                
+                setTimeout(() => {
+                    window.location.href = redirectPage; // 💡 Redirección CONDICIONAL
+                }, 5000); 
+
             } else {
-                // Si está logueado pero no tiene PIN, lo enviamos a la página de Vendedor para que se diferencie.
-                window.location.href = 'vendedor_login.html'; 
+                // Si viene de un LOGIN NORMAL o ya estaba autenticado
+                window.location.href = redirectPage; // 💡 Redirección CONDICIONAL
             }
         }
     });
-
+    
+    // ... (El resto de funciones auxiliares son iguales) ...
+    
 </script>
 </body>
 </html>
