@@ -8,11 +8,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-        /* --- ESTILOS BASE --- */
-        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #e0eafc, #cfdef3); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; position: relative; }
-        header { text-align: center; margin-bottom: 20px; }
-        h1 { color: #2c3e50; font-size: clamp(1.5em, 5vw, 2em); margin: 0; }
-        #subtituloPrincipal { color: #34495e; font-size: clamp(1em, 3vw, 1.2em); margin-top: 5px; }
+        /* --- ESTILOS BASE Y FONDO --- */
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%); 
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-height: 100vh; 
+            position: relative; 
+        }
+        header { 
+            text-align: center; 
+            margin-bottom: 20px; 
+        }
+        h1 { 
+            color: #2c3e50; 
+            font-size: clamp(1.8em, 5vw, 2.5em); 
+            margin: 0; 
+            font-weight: 700;
+        }
+        #subtituloPrincipal { 
+            color: #34495e; 
+            font-size: clamp(1em, 3vw, 1.2em); 
+            margin-top: 5px; 
+        }
 
         /* --- BOTÓN VOLVER (A INICIO) --- */
         #backToHomeBtn {
@@ -28,40 +50,180 @@
             font-weight: 600;
             text-decoration: none;
             transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         #backToHomeBtn:hover {
             background: #2c3e50;
         }
         
+        /* --- ENTRADA DEL PIN --- */
+        #vendedorInput {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #vendedorPinInput {
+            padding: 12px; 
+            border: 2px solid #ccc; 
+            border-radius: 8px; 
+            flex-grow: 1;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        
+        #cargarRifaBtn {
+            padding: 12px 20px; 
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        #cargarRifaBtn:hover {
+            transform: translateY(-1px);
+        }
+
         /* --- ESTILOS DE LA CUADRÍCULA --- */
-        #talonario { max-width: 900px; width: 100%; padding: 0 10px; box-sizing: border-box; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: separate; border-spacing: 6px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); padding: 8px; table-layout: fixed; }
-        td { width: 10%; height: 50px; background: linear-gradient(135deg, #6dd5fa, #2980b9); color: #fff; font-size: clamp(0.9em, 2.5vw, 1.1em); font-weight: 600; text-align: center; border-radius: 8px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
-        td:hover:not(.ocupado):not(.pagado) { transform: scale(1.05); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+        #talonario { 
+            max-width: 900px; 
+            width: 100%; 
+            padding: 0 10px; 
+            box-sizing: border-box; 
+            margin-bottom: 20px; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: separate; 
+            border-spacing: 6px; 
+            background: #ffffff; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+            padding: 8px; 
+            table-layout: fixed; 
+        }
+        td { 
+            width: 10%; 
+            height: 50px; 
+            background: linear-gradient(135deg, #6dd5fa, #2980b9); 
+            color: #fff; 
+            font-size: clamp(0.9em, 2.5vw, 1.1em); 
+            font-weight: 600; 
+            text-align: center; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: transform 0.2s, box-shadow 0.2s; 
+        }
+        td:hover:not(.ocupado):not(.pagado) { 
+            transform: scale(1.05); 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+        }
         
         /* Estilos de Estado */
-        td.ocupado { background: #e74c3c; cursor: not-allowed; opacity: 0.8; } /* Apartado por cliente/vendedor */
-        td.pagado { background: #2ecc71; cursor: not-allowed; opacity: 1; } /* Pagado - no disponible */
-        td.pagado .numero { display: none; }
-        td.pagado:after { content: '💵'; font-size: 1.5em; line-height: 1; }
+        td.apartado { 
+            background: #f39c12; 
+            cursor: not-allowed; 
+            opacity: 0.9; 
+        } 
+        td.pagado { 
+            background: #2ecc71; 
+            cursor: not-allowed; 
+            opacity: 1; 
+        } 
+        td.pagado .numero { 
+            display: none; 
+        }
+        td.pagado:after { 
+            content: '💵'; 
+            font-size: 1.5em; 
+            line-height: 1; 
+        }
 
-        td.ocupado, td.pagado { 
+        td.apartado, td.pagado { 
             transform: none !important;
             box-shadow: none !important;
         }
 
         /* --- ESTILOS DEL MODAL --- */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: #fff; padding: 30px; border-radius: 10px; width: 90%; max-width: 400px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); position: relative; }
-        .cerrar { float: right; font-size: 1.5em; cursor: pointer; color: #333; }
-        .modal-content label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 600; color: #34495e; }
-        .modal-content input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .modal-content button { padding: 12px; background: #2980b9; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background 0.2s; width: 100%; margin-top: 20px;}
-        .modal-content button:hover { background: #3498db; }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.6); 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000; 
+        }
+        .modal-content { 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 10px; 
+            width: 90%; 
+            max-width: 400px; 
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
+            position: relative; 
+        }
+        .cerrar { 
+            position: absolute; 
+            top: 10px; 
+            right: 20px;
+            font-size: 1.5em; 
+            cursor: pointer; 
+            color: #333; 
+        }
+        .modal-content label { 
+            display: block; 
+            margin-top: 15px; 
+            margin-bottom: 5px; 
+            font-weight: 600; 
+            color: #34495e; 
+        }
+        .modal-content input { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            box-sizing: border-box; 
+        }
+        .modal-content button { 
+            padding: 12px; 
+            background: #2980b9; 
+            color: #fff; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            transition: background 0.2s; 
+            width: 100%; 
+            margin-top: 20px;
+        }
+        .modal-content button:hover { 
+            background: #3498db; 
+        }
         
         /* --- ESTILOS DE NOTIFICACIÓN --- */
-        .notificacion { position: fixed; top: 20px; right: 20px; background: #00ff7f; color: #fff; padding: 15px 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0, 255, 127, 0.7); z-index: 2000; display: none; font-weight: 600;}
+        .notificacion { 
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            background: #00ff7f; 
+            color: #fff; 
+            padding: 15px 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 0 15px rgba(0, 255, 127, 0.7); 
+            z-index: 2000; 
+            display: none; 
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -69,14 +231,14 @@
 
     <header>
         <h1>TalonarioDigital</h1>
-        <p id="subtituloPrincipal">Ingresa el PIN de tu vendedor para ver la rifa.</p>
+        <p id="subtituloPrincipal">Ingresa el PIN que te dio tu vendedor para ver la rifa.</p>
     </header>
 
-    <div id="vendedorInput" style="display: flex; gap: 10px; margin-bottom: 20px; width: 90%; max-width: 400px; align-items: center;">
+    <div id="vendedorInput" style="display: flex; gap: 15px; margin-bottom: 20px; width: 90%; max-width: 450px; align-items: center; flex-wrap: wrap; justify-content: center;">
         <i class="fas fa-key" style="font-size: 1.5em; color: #34495e;"></i>
-        <input type="text" id="vendedorPinInput" placeholder="Ingresa el PIN de Acceso" required 
-               minlength="6" maxlength="10" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; flex-grow: 1;">
-        <button id="cargarRifaBtn" style="padding: 10px 15px; background: #2ecc71;">Entrar</button>
+        <input type="text" id="vendedorPinInput" placeholder="PIN de 6 a 10 caracteres" required 
+               minlength="6" maxlength="10" style="flex-grow: 1;">
+        <button id="cargarRifaBtn">Entrar</button>
     </div>
 
     <div id="talonario" style="display: none;">
@@ -86,7 +248,7 @@
         <div class="modal-content">
             <span id="cerrarModal" class="cerrar">×</span>
             <h2>Apartar Número <span id="numeroBoletoModal"></span></h2>
-            <p>Introduce tus datos para apartar este número.</p>
+            <p>Introduce tus datos para apartar este número. El vendedor te contactará.</p>
             <form id="formRegistroCliente">
                 <label for="nombreCliente">Tu Nombre:</label>
                 <input type="text" id="nombreCliente" required>
@@ -94,7 +256,7 @@
                 <label for="celularCliente">Tu Celular (WhatsApp):</label>
                 <input type="tel" id="celularCliente" placeholder="Ej: 3155445183" required>
                 
-                <button type="submit" id="apartarBoletoBtn">Apartar</button>
+                <button type="submit" id="apartarBoletoBtn">Apartar Número</button>
             </form>
         </div>
     </div>
@@ -112,7 +274,8 @@
         setDoc, 
         onSnapshot, 
         Timestamp,
-        getDoc // Necesario para buscar el PIN
+        getDoc, 
+        serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
     
     // ** La configuración de Firebase (DEBE SER LA REAL)**
@@ -158,7 +321,6 @@
         mensajeNotificacion.textContent = mensaje;
         notificacion.style.animation = 'none';
         notificacion.offsetHeight; 
-        // Nota: Las keyframes de slideIn/slideOut deben estar definidas en el CSS.
         notificacion.style.display = 'block';
         setTimeout(() => { notificacion.style.display = 'none'; }, 3000);
     }
@@ -180,10 +342,10 @@
                 const boletoData = datos[numStr];
                 const estado = boletoData ? boletoData.estado : 'disponible';
                 
-                celda.classList.remove('ocupado', 'pagado');
+                celda.classList.remove('apartado', 'pagado');
 
                 if (estado === 'apartado') {
-                    celda.classList.add('ocupado');
+                    celda.classList.add('apartado');
                 } else if (estado === 'pagado') {
                      celda.classList.add('pagado');
                 }
@@ -219,7 +381,7 @@
         const celularLimpio = celularInput.replace(/[^0-9]/g, ''); // Limpia caracteres no numéricos
 
         if (!vendedorUidActual || !numeroBoletoSeleccionado || celularLimpio.length < 7) {
-            mostrarNotificacion('⚠️ Error: Falta información. Recarga la página.');
+            mostrarNotificacion('⚠️ Error: Falta información o el número de celular no es válido.');
             return;
         }
 
@@ -227,14 +389,19 @@
             nombre: nombre,
             celular: celularLimpio,
             estado: 'apartado',
-            fechaApartado: Timestamp.now()
+            fechaApartado: serverTimestamp() // Usa serverTimestamp para evitar desincronización
         };
         
+        // Referencia del boleto dentro de la colección 'rifas' del vendedor
         const boletoRef = doc(db, 'users', vendedorUidActual, 'rifas', numeroBoletoSeleccionado);
+        
+        document.getElementById('apartarBoletoBtn').disabled = true;
+        document.getElementById('apartarBoletoBtn').textContent = 'Apartando...';
 
         try {
-            // setDoc con {merge: true} puede causar problemas de seguridad si el boleto ya existe.
-            // Para el cliente NO autenticado, Firebase debe aplicar la regla de 'allow create'.
+            // Utilizamos setDoc sin merge:true. Las reglas de seguridad deben ser 'allow create'
+            // para que un usuario no autenticado pueda crear el documento (boleto).
+            // Si el documento ya existe (está apartado/pagado), esto fallará con permiso denegado.
             await setDoc(boletoRef, dataApartado);
             
             modal.style.display = 'none';
@@ -242,12 +409,15 @@
 
         } catch (error) {
             console.error('Error al apartar en Firebase:', error);
-            // La regla de seguridad 'allow create' fallará si el documento ya existe (está apartado/pagado)
+            
             if (error.code === 'permission-denied') { 
-                mostrarNotificacion('⚠️ Este número acaba de ser apartado por otra persona. El talonario se actualizará.');
+                mostrarNotificacion('⚠️ Este número acaba de ser apartado/pagado por otra persona. El talonario se actualizará.');
             } else {
-                mostrarNotificacion('⚠️ Error desconocido al intentar apartar: ' + error.message);
+                mostrarNotificacion('⚠️ Error al intentar apartar: ' + error.message);
             }
+        } finally {
+            document.getElementById('apartarBoletoBtn').disabled = false;
+            document.getElementById('apartarBoletoBtn').textContent = 'Apartar Número';
         }
     };
 
@@ -268,7 +438,6 @@
             generarTalonarioCliente(datos);
         }, (error) => {
             console.error('Error en el oyente de Firestore:', error);
-            // Este error puede ocurrir si el UID es correcto pero las reglas fallan.
             mostrarNotificacion('Error de conexión con la rifa. (Verifica reglas de seguridad)');
         });
         
@@ -278,13 +447,14 @@
     
     // --- FUNCIÓN PRINCIPAL DE CARGA POR PIN ---
     cargarRifaBtn.onclick = async () => { 
-        const pin = vendedorPinInput.value.trim();
+        const pin = vendedorPinInput.value.trim().toLowerCase(); // Asegura minúsculas
         if (pin.length < 6) { 
             mostrarNotificacion('⚠️ Introduce un PIN válido (mínimo 6 caracteres).');
             return;
         }
 
         cargarRifaBtn.disabled = true;
+        cargarRifaBtn.textContent = 'Buscando...';
         subtituloPrincipal.textContent = 'Buscando talonario...';
 
         try {
@@ -302,19 +472,21 @@
                 
             } else {
                 mostrarNotificacion('⚠️ PIN no encontrado o incorrecto.');
-                subtituloPrincipal.textContent = 'Ingresa el PIN de tu vendedor para ver la rifa.';
+                subtituloPrincipal.textContent = 'Ingresa el PIN que te dio tu vendedor para ver la rifa.';
                 cargarRifaBtn.disabled = false;
+                cargarRifaBtn.textContent = 'Entrar';
             }
             
         } catch (error) {
             console.error('Error al buscar PIN:', error);
-            mostrarNotificacion('Error de conexión o permisos al buscar el PIN.');
-            subtituloPrincipal.textContent = 'Ingresa el PIN de tu vendedor para ver la rifa.';
+            mostrarNotificacion('Error de conexión al buscar el PIN.');
+            subtituloPrincipal.textContent = 'Ingresa el PIN que te dio tu vendedor para ver la rifa.';
             cargarRifaBtn.disabled = false;
+            cargarRifaBtn.textContent = 'Entrar';
         }
     };
 
-    // --- INICIALIZACIÓN ---
+    // --- INICIALIZACIÓN Y LISTENERS DEL MODAL ---
     document.addEventListener('DOMContentLoaded', () => {
         // Listeners del modal
         document.getElementById('cerrarModal').onclick = () => { modal.style.display = 'none'; };
