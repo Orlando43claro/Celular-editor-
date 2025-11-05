@@ -3,293 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Rifa - Acceso Clientes</title>
+    <title>Aparta tu Número - TalonarioDigital</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-/* --- ESTILOS CSS COMPLETOS (Copiados de talonario.html, pero con ajustes para solo lectura) --- */
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #e0eafc, #cfdef3);
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-}
-header {
-    background-color: #ffffff;
-    color: #2c3e50;
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 900px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap; 
-    box-sizing: border-box; 
-    border-radius: 8px 8px 0 0;
-}
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-h1 {
-    color: #2c3e50;
-    font-size: clamp(1.5em, 5vw, 2em);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    margin: 0;
-}
-p#subtituloPrincipal {
-    color: #34495e;
-    font-size: clamp(0.9em, 3vw, 1em);
-    margin: 10px 0;
-    width: 100%;
-    text-align: center;
-}
-#userInfo {
-    margin-top: 0; 
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-#emailDisplay {
-    display: none !important; 
-}
-#userInfo button {
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: white;
-    font-size: 0.9em;
-}
-#logoutBtn {
-    background: #e74c3c;
-}
-#userInfo button:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
-/* Ocultar elementos de administración */
-#abrirPerfilBtn, #abrirChatBtn, #limpiarTalonario {
-    display: none !important;
-}
-@media (max-width: 650px) {
-    header {
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 10px;
-    }
-    .logo {
-        margin-bottom: 10px;
-    }
-    p#subtituloPrincipal {
-        margin-bottom: 10px;
-    }
-    #userInfo {
-        width: 100%;
-        justify-content: center;
-        margin-top: 10px;
-    }
-    #userInfo button {
-        flex-grow: 1;
-        text-align: center;
-        justify-content: center;
-    }
-}
-/* Estilos Específicos para la Vista de PIN */
-#pinVerificationView {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    max-width: 400px;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    margin: 20px 0;
-}
-#pinVerificationView h2 {
-    color: #2c3e50;
-    margin-bottom: 10px;
-}
-#pinVerificationView p {
-    text-align: center;
-}
-#pinVerificationView button {
-    background: #1e90ff; 
-    color: white; 
-    padding: 10px 20px; 
-    border: none; 
-    border-radius: 5px; 
-    cursor: pointer;
-    font-weight: 600;
-}
-.controles {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 10px;
-}
-#contadorVendidos {
-    color: #2c3e50;
-    font-size: 1em;
-    font-weight: 600;
-    background: #ffffff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-.filtros {
-    display: flex;
-    gap: 8px;
-}
-.filtro {
-    position: relative;
-    padding: 6px 12px;
-    background: #95a5a6;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.8em;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    transition: background 0.2s, box-shadow 0.2s;
-}
-.filtro.activo {
-    background: #1e90ff;
-    box-shadow: 0 0 8px rgba(30, 144, 255, 0.5);
-}
-/* ... (Estilos de filtros, talonarioView, etc. son iguales) ... */
-#talonario, #listaBoletos {
-    max-width: 900px;
-    width: 100%;
-    padding: 0 10px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 6px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 8px;
-    table-layout: fixed;
-}
-td {
-    width: 10%;
-    height: 50px;
-    background: linear-gradient(135deg, #6dd5fa, #2980b9);
-    color: #fff;
-    font-size: clamp(0.9em, 2.5vw, 1.1em);
-    font-weight: 600;
-    text-align: center;
-    border-radius: 8px;
-    cursor: default; /* 💡 CAMBIO: Cursor por defecto (no es clickable) */
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-td.seleccionado {
-    background: linear-gradient(135deg, #f1c40f, #f39c12); /* 💡 CAMBIO DE COLOR: Apartado */
-    color: #fff;
-}
-td.pagado {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-    color: #fff;
-}
-td.pagado > span {
-    font-size: 1.5em; 
-    line-height: 1;
-}
-td.oculta {
-    display: none !important;
-}
-/* ... (El resto de estilos de tarjetas, notificaciones, etc. es igual) ... */
+        /* --- ESTILOS BASE --- */
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #e0eafc, #cfdef3); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; position: relative; }
+        header { text-align: center; margin-bottom: 20px; }
+        h1 { color: #2c3e50; font-size: clamp(1.5em, 5vw, 2em); margin: 0; }
+        #subtituloPrincipal { color: #34495e; font-size: clamp(1em, 3vw, 1.2em); margin-top: 5px; }
+
+        /* --- BOTÓN VOLVER (A INICIO) --- */
+        #backToHomeBtn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 8px 15px;
+            background: #34495e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        
+        #backToHomeBtn:hover {
+            background: #2c3e50;
+        }
+        
+        /* --- ESTILOS DE LA CUADRÍCULA --- */
+        #talonario { max-width: 900px; width: 100%; padding: 0 10px; box-sizing: border-box; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 6px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); padding: 8px; table-layout: fixed; }
+        td { width: 10%; height: 50px; background: linear-gradient(135deg, #6dd5fa, #2980b9); color: #fff; font-size: clamp(0.9em, 2.5vw, 1.1em); font-weight: 600; text-align: center; border-radius: 8px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        td:hover:not(.ocupado):not(.pagado) { transform: scale(1.05); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+        
+        /* Estilos de Estado */
+        td.ocupado { background: #e74c3c; cursor: not-allowed; opacity: 0.8; } /* Apartado por cliente/vendedor */
+        td.pagado { background: #2ecc71; cursor: not-allowed; opacity: 1; } /* Pagado - no disponible */
+        td.pagado .numero { display: none; }
+        td.pagado:after { content: '💵'; font-size: 1.5em; line-height: 1; }
+
+        td.ocupado, td.pagado { 
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* --- ESTILOS DEL MODAL --- */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: #fff; padding: 30px; border-radius: 10px; width: 90%; max-width: 400px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); position: relative; }
+        .cerrar { float: right; font-size: 1.5em; cursor: pointer; color: #333; }
+        .modal-content label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 600; color: #34495e; }
+        .modal-content input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .modal-content button { padding: 12px; background: #2980b9; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background 0.2s; width: 100%; margin-top: 20px;}
+        .modal-content button:hover { background: #3498db; }
+        
+        /* --- ESTILOS DE NOTIFICACIÓN --- */
+        .notificacion { position: fixed; top: 20px; right: 20px; background: #00ff7f; color: #fff; padding: 15px 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0, 255, 127, 0.7); z-index: 2000; display: none; font-weight: 600;}
     </style>
-    <link rel="icon" id="favicon" type="image/png" href="icono-talonariodigital.png">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <div class="icono">
-                <div class="boleto">
-                    <span class="numero">Rifa</span>
-                    <div class="check"></div>
-                </div>
-            </div>
-            <h1>Estado de la Rifa</h1>
-        </div>
+    <a id="backToHomeBtn" href="inicio.html"><i class="fas fa-home"></i> Inicio</a>
 
-        <div id="userInfo" style="display: none;">
-            <p id="emailDisplay"></p> 
-            <button id="logoutBtn">
-                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-            </button>
-        </div>
-        
-        <p id="subtituloPrincipal">Verificando sesión...</p>
+    <header>
+        <h1>TalonarioDigital</h1>
+        <p id="subtituloPrincipal">Ingresa el PIN de tu vendedor para ver la rifa.</p>
     </header>
 
-    <div id="pinVerificationView" style="display: none;">
-        <h2>Acceso de Cliente</h2>
-        <p style="text-align: center; color: #34495e; margin: 15px 0;">
-            Introduce tu PIN de 6 dígitos para ver el estado de la rifa.
-        </p>
-        <form id="pinForm" style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
-            <input type="text" id="pinInput" placeholder="PIN de 6 dígitos" maxlength="6" required 
-                   style="text-align: center; font-size: 1.5em; letter-spacing: 5px; padding: 10px; width: 200px; border: 1px solid #ccc; border-radius: 5px;">
-            <button type="submit">
-                Verificar PIN
-            </button>
-        </form>
-        <p id="pinError" style="color: #e74c3c; display: none; margin-top: 15px; font-weight: 600;">
-            PIN incorrecto o usuario no registrado.
-        </p>
+    <div id="vendedorInput" style="display: flex; gap: 10px; margin-bottom: 20px; width: 90%; max-width: 400px; align-items: center;">
+        <i class="fas fa-key" style="font-size: 1.5em; color: #34495e;"></i>
+        <input type="text" id="vendedorPinInput" placeholder="Ingresa el PIN de Acceso" required 
+               minlength="6" maxlength="10" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; flex-grow: 1;">
+        <button id="cargarRifaBtn" style="padding: 10px 15px; background: #2ecc71;">Entrar</button>
+    </div>
+
+    <div id="talonario" style="display: none;">
+        </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="cerrarModal" class="cerrar">×</span>
+            <h2>Apartar Número <span id="numeroBoletoModal"></span></h2>
+            <p>Introduce tus datos para apartar este número.</p>
+            <form id="formRegistroCliente">
+                <label for="nombreCliente">Tu Nombre:</label>
+                <input type="text" id="nombreCliente" required>
+
+                <label for="celularCliente">Tu Celular (WhatsApp):</label>
+                <input type="tel" id="celularCliente" placeholder="Ej: 3155445183" required>
+                
+                <button type="submit" id="apartarBoletoBtn">Apartar</button>
+            </form>
+        </div>
     </div>
     
-    <div id="talonarioView" style="display: none; width: 100%; max-width: 900px; flex-direction: column; align-items: center;">
-        <div class="controles">
-            <span id="contadorVendidos">Vendidos: 0/100</span>
-            <div class="filtros">
-                <button id="filtroTodo" class="filtro activo">Todo <span class="notificacion-filtro" id="contadorTodo">100</span></button>
-                <button id="filtroDisponible" class="filtro">Disponible <span class="notificacion-filtro" id="contadorDisponible">100</span></button>
-                <button id="filtroApartado" class="filtro">Apartado <span class="notificacion-filtro" id="contadorApartado">0</span></button>
-                <button id="filtroPagado" class="filtro">Pagado <span class="notificacion-filtro" id="contadorPagado">0</span></button>
-            </div>
-        </div>
-        <div id="talonario" style="margin-top: 20px;">
-        </div>
-        
-        <div id="listaBoletos">
-            <h2 style="color: #2c3e50; margin-top: 30px; text-align: center;">Resumen de Boletos Apartados</h2>
-            <div id="lista"></div> 
-        </div>
-    </div>
-
-
     <div id="notificacion" class="notificacion">
         <p id="mensajeNotificacion"></p>
     </div>
-    
     
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
@@ -297,17 +109,13 @@ td.oculta {
         getFirestore, 
         collection, 
         doc, 
-        getDoc, 
-        onSnapshot,
+        setDoc, 
+        onSnapshot, 
+        Timestamp,
+        getDoc // Necesario para buscar el PIN
     } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
-    import { 
-        getAuth, 
-        signOut, 
-        onAuthStateChanged,            
-    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
-
-
-    // ** REEMPLAZA ESTO CON TU CONFIGURACIÓN REAL DE FIREBASE **
+    
+    // ** La configuración de Firebase (DEBE SER LA REAL)**
     const firebaseConfig = {
         apiKey: "AIzaSyDY5KBUwbDwjeCYY7ILXkRB5EJBVoVAmF0", 
         authDomain: "talonario-rifa.firebaseapp.com",
@@ -318,329 +126,30 @@ td.oculta {
         measurementId: "G-FWH8F9SVFM"
     };
 
-    // Inicializar Firebase, Firestore y Auth
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const auth = getAuth(app); 
+    
+    // Referencia a la colección pública de PINES
+    const publicKeysRef = collection(db, "publicKeys"); 
     
     // --- VARIABLES DE ESTADO ---
-    let uidUsuarioActual = null; 
+    let vendedorUidActual = null; 
     let unsubscribe = null; 
+    let numeroBoletoSeleccionado = null;
 
-    let filtroActivo = 'todo';
-    let datosActuales = { seleccionados: [], pagados: [], datosBoletos: {} }; 
-
-    // ⚠️ REEMPLAZA ESTE VALOR CON EL UID DEL ADMINISTRADOR/VENDEDOR REAL.
-    // Los clientes SÓLO ven la rifa de este UID.
-    const UID_ADMINISTRADOR = 'UID_DEL_ADMINISTRADOR_AQUI'; 
-    // ----------------------------
-
-    function obtenerBoletosRef() {
-        // En la vista de cliente, siempre apunta al UID del administrador
-        if (!UID_ADMINISTRADOR || UID_ADMINISTRADOR === 'UID_DEL_ADMINISTRADOR_AQUI') {
-             throw new Error("UID del Administrador no configurado correctamente.");
-        }
-        return collection(db, 'users', UID_ADMINISTRADOR, 'rifas');
-    }
-    
-    // --- FUNCIÓN DE TIEMPO REAL (LECTURA) ---
-    function iniciarOyenteTiempoReal() {
-        
-        if (unsubscribe) {
-            unsubscribe();
-            unsubscribe = null;
-        }
-
-        const boletosRef = obtenerBoletosRef();
-        
-        unsubscribe = onSnapshot(boletosRef, (snapshot) => {
-            
-            let seleccionados = [];
-            let pagados = [];
-            let datosBoletos = {};
-            
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const numero = doc.id;
-                datosBoletos[numero] = data;
-
-                if (data.estado === 'apartado') {
-                    seleccionados.push(numero);
-                } else if (data.estado === 'pagado') {
-                    pagados.push(numero);
-                }
-            });
-            
-            datosActuales = { seleccionados, pagados, datosBoletos }; 
-
-            generarTalonario(datosActuales.seleccionados, datosActuales.pagados, datosActuales.datosBoletos);
-            
-            actualizarControles(datosActuales.seleccionados, datosActuales.pagados);
-            generarListaBoletos(datosActuales.seleccionados, datosActuales.pagados, datosActuales.datosBoletos); 
-            
-        }, (error) => {
-            console.error('Error en el oyente de Firestore:', error);
-            document.getElementById('talonario').innerHTML = '<p style="color: red;">Error al cargar el talonario: ' + error.message + '</p>';
-            mostrarNotificacion('Error de conexión en tiempo real con Firebase.');
-        });
-    }
-    
-    // 💡 FUNCIÓN DE VERIFICACIÓN DE PIN (Solo Lectura)
-    function setupPinVerification(user) {
-        const pinVerificationView = document.getElementById('pinVerificationView');
-        const talonarioView = document.getElementById('talonarioView');
-        const pinForm = document.getElementById('pinForm');
-        const pinInput = document.getElementById('pinInput');
-        const pinError = document.getElementById('pinError');
-        const subtituloPrincipal = document.getElementById('subtituloPrincipal');
-
-        talonarioView.style.display = 'none';
-        pinVerificationView.style.display = 'flex';
-        subtituloPrincipal.textContent = `Bienvenido, ${user.displayName || user.email}. Ingresa tu PIN.`;
-        document.getElementById('userInfo').style.display = 'none';
-        
-        // Función auxiliar para CONCEDER ACCESO (solo lectura)
-        function grantAccess() {
-            pinVerificationView.style.display = 'none';
-            talonarioView.style.display = 'flex'; 
-            document.getElementById('userInfo').style.display = 'flex'; 
-            subtituloPrincipal.textContent = 'Estado actual de la rifa';
-            
-            if (!unsubscribe) iniciarOyenteTiempoReal(); 
-            
-            mostrarNotificacion(`✅ Acceso concedido.`);
-        }
-
-        // Lógica de Verificación
-        if (pinForm) {
-            pinForm.onsubmit = async (e) => {
-                e.preventDefault();
-                pinError.style.display = 'none';
-                const enteredPin = pinInput.value.trim();
-
-                if (enteredPin.length !== 6) {
-                    pinError.textContent = "El PIN debe tener 6 dígitos.";
-                    pinError.style.display = 'block';
-                    return;
-                }
-
-                try {
-                    // El PIN debe buscarse en la colección 'clientes'
-                    const userDocSnap = await getDoc(doc(db, "clientes", user.uid));
-
-                    if (userDocSnap.exists()) {
-                        const correctPin = userDocSnap.data().pin;
-                        
-                        if (enteredPin === correctPin) {
-                            grantAccess();
-                        } else {
-                            pinError.textContent = "PIN incorrecto. Intenta de nuevo.";
-                            pinError.style.display = 'block';
-                        }
-                    } else {
-                        pinError.textContent = "Error: La cuenta no tiene PIN registrado. Contacta al administrador.";
-                        pinError.style.display = 'block';
-                    }
-
-                } catch (error) {
-                    console.error("Error al verificar PIN:", error);
-                    pinError.textContent = "Error de conexión o servidor. Intenta de nuevo.";
-                    pinError.style.display = 'block';
-                }
-            };
-        }
-    }
-
-    // --- MANEJO DE AUTENTICACIÓN (GUARDIA DE SEGURIDAD) ---
-
-    function setupAuthListeners() {
-
-        document.getElementById('logoutBtn').onclick = async () => {
-            try {
-                await signOut(auth);
-                mostrarNotificacion("¡Sesión cerrada con éxito!");
-            } catch (error) {
-                console.error("Error al cerrar sesión:", error);
-                mostrarNotificacion("Error al cerrar sesión.");
-            }
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            const talonarioView = document.getElementById('talonarioView');
-            const userInfo = document.getElementById('userInfo');
-            const subtituloPrincipal = document.getElementById('subtituloPrincipal');
-            
-            // Ocultar contenido y setear estado inicial
-            talonarioView.style.display = 'none'; 
-            userInfo.style.display = 'none';
-            document.getElementById('pinVerificationView').style.display = 'none'; 
-            subtituloPrincipal.textContent = 'Verificando sesión...';
+    // --- DOM ELEMENTOS ---
+    const talonarioDiv = document.getElementById('talonario');
+    const modal = document.getElementById('modal');
+    const formRegistroCliente = document.getElementById('formRegistroCliente');
+    const numeroBoletoModal = document.getElementById('numeroBoletoModal');
+    const vendedorPinInput = document.getElementById('vendedorPinInput');
+    const vendedorInputDiv = document.getElementById('vendedorInput');
+    const subtituloPrincipal = document.getElementById('subtituloPrincipal');
+    const cargarRifaBtn = document.getElementById('cargarRifaBtn');
 
 
-            if (user) {
-                // USUARIO AUTENTICADO
-                uidUsuarioActual = user.uid;
-                
-                if (unsubscribe) {
-                    unsubscribe();
-                    unsubscribe = null;
-                }
-                
-                document.getElementById('emailDisplay').textContent = user.email; 
-
-                // LLAMAR A LA VERIFICACIÓN DE PIN
-                setupPinVerification(user); 
-                
-            } else {
-                // NINGÚN USUARIO: REDIRECCIÓN INMEDIATA
-                uidUsuarioActual = null;
-                subtituloPrincipal.textContent = 'Redirigiendo al login...';
-
-                if (unsubscribe) {
-                    unsubscribe();
-                    unsubscribe = null;
-                }
-                
-                // REDIRECCIÓN DE SEGURIDAD
-                window.location.href = 'index.html'; 
-            }
-        });
-    }
-
-    // --- FUNCIONES DE RENDERIZADO ---
-    
-    function generarTalonario(seleccionados, pagados, datosBoletos) { 
-        const talonario = document.getElementById('talonario');
-        if (!talonario) return;
-        
-        talonario.innerHTML = ''; 
-
-        try {
-            const tabla = document.createElement('table');
-            let numero = 0;
-            for (let i = 0; i < 10; i++) {
-                const fila = document.createElement('tr');
-                for (let j = 0; j < 10; j++) {
-                    const celda = document.createElement('td');
-                    const numStr = numero.toString().padStart(2, '0');
-                    celda.dataset.numero = numStr;
-
-                    const isPagado = pagados.includes(numStr);
-                    const isSeleccionado = seleccionados.includes(numStr);
-
-                    if (isPagado) {
-                        celda.innerHTML = `<span style="font-size: 1.5em; line-height: 1;">💵</span>`; 
-                    } else {
-                        celda.textContent = numStr;
-                    }
-
-                    celda.classList.remove('seleccionado', 'pagado', 'oculta');
-                    
-                    // 💡 Nota: Aquí podrías añadir una clase especial si el boleto le pertenece al cliente logueado.
-
-                    if (isPagado) {
-                        celda.classList.add('pagado');
-                    } else if (isSeleccionado) {
-                        celda.classList.add('seleccionado');
-                    }
-                    
-                    if (filtroActivo === 'disponible' && (isSeleccionado || isPagado)) {
-                        celda.classList.add('oculta');
-                    } else if (filtroActivo === 'apartado' && !isSeleccionado) {
-                        celda.classList.add('oculta');
-                    } else if (filtroActivo === 'pagado' && !isPagado) {
-                        celda.classList.add('oculta');
-                    } 
-                    
-                    // 💡 IMPORTANTE: No hay listener de click para editar/registrar
-                    
-                    fila.appendChild(celda);
-                    numero++;
-                }
-                tabla.appendChild(fila);
-            }
-            talonario.appendChild(tabla);
-        } catch (error) {
-            console.error('Error al crear la tabla:', error);
-            talonario.innerHTML = '<p style="color: red;">Error al cargar la tabla: ' + error.message + '</p>';
-        }
-    }
-    
-    function actualizarControles(seleccionados, pagados) {
-        // ... (Igual que talonario.html) ...
-        const contador = document.getElementById('contadorVendidos');
-        const contadorTodo = document.getElementById('contadorTodo');
-        const contadorDisponible = document.getElementById('contadorDisponible');
-        const contadorApartado = document.getElementById('contadorApartado');
-        const contadorPagado = document.getElementById('contadorPagado');
-
-        const total = 100;
-        const vendidos = seleccionados.length + pagados.length;
-        const disponibles = total - vendidos;
-
-        contador.textContent = `Vendidos: ${vendidos}/100`;
-        contadorTodo.textContent = total;
-        contadorDisponible.textContent = disponibles;
-        contadorApartado.textContent = seleccionados.length;
-        contadorPagado.textContent = pagados.length;
-    }
-
-    function generarListaBoletos(seleccionados, pagados, datosBoletos) {
-        const listaDiv = document.getElementById('lista');
-        if (!listaDiv) return;
-        listaDiv.innerHTML = ''; 
-
-        const todosBoletos = [
-            ...seleccionados.map(num => ({ numero: num, estado: 'apartado' })),
-            ...pagados.map(num => ({ numero: num, estado: 'pagado' }))
-        ].sort((a, b) => parseInt(a.numero) - parseInt(b.numero));
-
-        todosBoletos.forEach(boleto => {
-            const numeroFormateado = boleto.numero.padStart(2, '0');
-            const datos = datosBoletos[boleto.numero] || { nombre: 'Apartado', celular: '' };
-            
-            // 💡 Nota: Solo mostramos el estado y el número, NO el nombre o celular del cliente
-            // para proteger la privacidad de otros clientes.
-            
-            const card = document.createElement('div');
-            card.classList.add('boleto-card', boleto.estado);
-            
-            const iconoPagado = boleto.estado === 'pagado' ? '<span style="font-size: 1.2em; margin-left: 5px;">💵</span>' : '';
-            
-            card.innerHTML = `
-                <div class="info-numero">
-                    <span>Número **${numeroFormateado}**${iconoPagado}</span>
-                    <span class="info-estado">${boleto.estado}</span>
-                </div>
-                <div class="info-nombre">Estado: ${boleto.estado === 'pagado' ? 'Pago Verificado' : 'Pendiente de Pago'}</div>
-            `;
-            
-            listaDiv.appendChild(card);
-        });
-
-        if (todosBoletos.length === 0) {
-            const p = document.createElement('p');
-            p.textContent = 'Aún no hay boletos apartados ni pagados.';
-            p.style.color = '#7f8c8d';
-            p.style.textAlign = 'center';
-            p.style.gridColumn = '1 / -1'; 
-            listaDiv.appendChild(p);
-        }
-    }
-
-    function aplicarFiltro(tipo) {
-        filtroActivo = tipo;
-        const botonesFiltro = document.querySelectorAll('.filtro');
-        botonesFiltro.forEach(btn => btn.classList.remove('activo'));
-        document.getElementById(`filtro${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`).classList.add('activo');
-        
-        generarTalonario(datosActuales.seleccionados, datosActuales.pagados, datosActuales.datosBoletos);
-    }
-    
-    // --- OTRAS FUNCIONES AUXILIARES ---
-
+    // --- FUNCIÓN DE NOTIFICACIÓN ---
     function mostrarNotificacion(mensaje) {
-        // ... (Igual que talonario.html) ...
         const notificacion = document.getElementById('notificacion');
         const mensajeNotificacion = document.getElementById('mensajeNotificacion');
         notificacion.style.background = mensaje.includes('Error') || mensaje.includes('⚠️') ? '#ff4757' : '#00ff7f';
@@ -649,23 +158,168 @@ td.oculta {
         mensajeNotificacion.textContent = mensaje;
         notificacion.style.animation = 'none';
         notificacion.offsetHeight; 
-        notificacion.style.animation = null; 
-
+        // Nota: Las keyframes de slideIn/slideOut deben estar definidas en el CSS.
         notificacion.style.display = 'block';
+        setTimeout(() => { notificacion.style.display = 'none'; }, 3000);
+    }
+    
+    // --- FUNCIÓN PARA GENERAR EL TALONARIO (Vista cliente) ---
+    function generarTalonarioCliente(datos) { 
+        talonarioDiv.innerHTML = ''; 
+        
+        const tabla = document.createElement('table');
+        let numero = 0;
+        for (let i = 0; i < 10; i++) {
+            const fila = document.createElement('tr');
+            for (let j = 0; j < 10; j++) {
+                const celda = document.createElement('td');
+                const numStr = numero.toString().padStart(2, '0');
+                celda.dataset.numero = numStr;
+                celda.innerHTML = `<span class="numero">${numStr}</span>`;
+                
+                const boletoData = datos[numStr];
+                const estado = boletoData ? boletoData.estado : 'disponible';
+                
+                celda.classList.remove('ocupado', 'pagado');
+
+                if (estado === 'apartado') {
+                    celda.classList.add('ocupado');
+                } else if (estado === 'pagado') {
+                     celda.classList.add('pagado');
+                }
+
+                if (estado === 'disponible') {
+                    celda.addEventListener('click', function () {
+                        mostrarModalCliente(numStr); 
+                    });
+                }
+
+                fila.appendChild(celda);
+                numero++;
+            }
+            tabla.appendChild(fila);
+        }
+        talonarioDiv.appendChild(tabla);
     }
 
-
-    document.addEventListener('DOMContentLoaded', () => {
-        // Inicialización de filtros
-        document.getElementById('filtroTodo').classList.add('activo');
-        document.getElementById('filtroDisponible').addEventListener('click', () => aplicarFiltro('disponible'));
-        document.getElementById('filtroApartado').addEventListener('click', () => aplicarFiltro('apartado'));
-        document.getElementById('filtroPagado').addEventListener('click', () => aplicarFiltro('pagado'));
-        document.getElementById('filtroTodo').addEventListener('click', () => aplicarFiltro('todo'));
+    // --- FUNCIÓN PARA MOSTRAR EL MODAL DE APARTADO ---
+    function mostrarModalCliente(numero) {
+        numeroBoletoSeleccionado = numero;
+        numeroBoletoModal.textContent = numero.padStart(2, '0');
+        formRegistroCliente.reset();
+        modal.style.display = 'flex';
+    }
+    
+    // --- LÓGICA DE APARTADO DEL CLIENTE (USANDO 'CREATE') ---
+    formRegistroCliente.onsubmit = async function (e) {
+        e.preventDefault();
         
-        setupAuthListeners();
-    });
+        const nombre = document.getElementById('nombreCliente').value;
+        const celularInput = document.getElementById('celularCliente').value;
+        const celularLimpio = celularInput.replace(/[^0-9]/g, ''); // Limpia caracteres no numéricos
 
+        if (!vendedorUidActual || !numeroBoletoSeleccionado || celularLimpio.length < 7) {
+            mostrarNotificacion('⚠️ Error: Falta información. Recarga la página.');
+            return;
+        }
+
+        const dataApartado = {
+            nombre: nombre,
+            celular: celularLimpio,
+            estado: 'apartado',
+            fechaApartado: Timestamp.now()
+        };
+        
+        const boletoRef = doc(db, 'users', vendedorUidActual, 'rifas', numeroBoletoSeleccionado);
+
+        try {
+            // setDoc con {merge: true} puede causar problemas de seguridad si el boleto ya existe.
+            // Para el cliente NO autenticado, Firebase debe aplicar la regla de 'allow create'.
+            await setDoc(boletoRef, dataApartado);
+            
+            modal.style.display = 'none';
+            mostrarNotificacion(`¡Número ${numeroBoletoSeleccionado} apartado con éxito!`);
+
+        } catch (error) {
+            console.error('Error al apartar en Firebase:', error);
+            // La regla de seguridad 'allow create' fallará si el documento ya existe (está apartado/pagado)
+            if (error.code === 'permission-denied') { 
+                mostrarNotificacion('⚠️ Este número acaba de ser apartado por otra persona. El talonario se actualizará.');
+            } else {
+                mostrarNotificacion('⚠️ Error desconocido al intentar apartar: ' + error.message);
+            }
+        }
+    };
+
+    // --- FUNCIÓN DE TIEMPO REAL DINÁMICA DE RIFAS (PÚBLICA) ---
+    function iniciarOyenteTiempoRealCliente(uid) {
+        if (unsubscribe) {
+            unsubscribe();
+            unsubscribe = null;
+        }
+
+        const boletosRef = collection(db, 'users', uid, 'rifas');
+        
+        unsubscribe = onSnapshot(boletosRef, (snapshot) => {
+            let datos = {};
+            snapshot.forEach(doc => {
+                datos[doc.id] = doc.data();
+            });
+            generarTalonarioCliente(datos);
+        }, (error) => {
+            console.error('Error en el oyente de Firestore:', error);
+            // Este error puede ocurrir si el UID es correcto pero las reglas fallan.
+            mostrarNotificacion('Error de conexión con la rifa. (Verifica reglas de seguridad)');
+        });
+        
+        talonarioDiv.style.display = 'block';
+        subtituloPrincipal.textContent = 'Selecciona un número azul para apartarlo.';
+    }
+    
+    // --- FUNCIÓN PRINCIPAL DE CARGA POR PIN ---
+    cargarRifaBtn.onclick = async () => { 
+        const pin = vendedorPinInput.value.trim();
+        if (pin.length < 6) { 
+            mostrarNotificacion('⚠️ Introduce un PIN válido (mínimo 6 caracteres).');
+            return;
+        }
+
+        cargarRifaBtn.disabled = true;
+        subtituloPrincipal.textContent = 'Buscando talonario...';
+
+        try {
+            // 1. Buscar el documento en publicKeys/{PIN} para obtener el UID
+            const pinDoc = await getDoc(doc(publicKeysRef, pin));
+            
+            if (pinDoc.exists() && pinDoc.data().uid) {
+                // 2. PIN encontrado, obtener el UID
+                const uid = pinDoc.data().uid;
+                vendedorUidActual = uid;
+                
+                // 3. Ocultar la entrada, iniciar el oyente
+                vendedorInputDiv.style.display = 'none';
+                iniciarOyenteTiempoRealCliente(vendedorUidActual);
+                
+            } else {
+                mostrarNotificacion('⚠️ PIN no encontrado o incorrecto.');
+                subtituloPrincipal.textContent = 'Ingresa el PIN de tu vendedor para ver la rifa.';
+                cargarRifaBtn.disabled = false;
+            }
+            
+        } catch (error) {
+            console.error('Error al buscar PIN:', error);
+            mostrarNotificacion('Error de conexión o permisos al buscar el PIN.');
+            subtituloPrincipal.textContent = 'Ingresa el PIN de tu vendedor para ver la rifa.';
+            cargarRifaBtn.disabled = false;
+        }
+    };
+
+    // --- INICIALIZACIÓN ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // Listeners del modal
+        document.getElementById('cerrarModal').onclick = () => { modal.style.display = 'none'; };
+        modal.onclick = (e) => { if (e.target === modal) { modal.style.display = 'none'; } };
+    });
 </script>
 </body>
 </html>
