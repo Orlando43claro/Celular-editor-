@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalonarioDigital (Seguro)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+/* --- ESTILOS CSS COMPLETOS --- */
+/* ... (Se mantiene igual) ... */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #e0eafc, #cfdef3);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+header {
+    background-color: #ffffff;
+    color: #2c3e50;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; 
+    box-sizing: border-box; 
+    border-radius: 8px 8px 0 0;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+h1 {
+    color: #2c3e50;
+    font-size: clamp(1.5em, 5vw, 2em);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    margin: 0;
+}
+p#subtituloPrincipal {
+    color: #34495e;
+    font-size: clamp(0.9em, 3vw, 1em);
+    margin: 10px 0;
+    width: 100%;
+    text-align: center;
+}
+#userInfo {
+    margin-top: 0; 
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+#emailDisplay {
+    display: none !important; 
+}
+#userInfo button, #abrirChatBtn {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    font-size: 0.9em;
+}
+#abrirPerfilBtn {
+    background: #3498db;
+}
+#logoutBtn {
+    background: #e74c3c;
+}
+#abrirChatBtn {
+    background: #2ecc71;
+    position: relative;
+}
+#userInfo button:hover, #abrirChatBtn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+#chatNotificationBadge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff4757;
+    color: white;
+    font-size: 0.75em;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    display: none;
+    line-height: 1;
+}
+.notificacion-activa {
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+}
+@media (max-width: 650px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 10px;
+    }
+    .logo {
+        margin-bottom: 10px;
+    }
+    p#subtituloPrincipal {
+        margin-bottom: 10px;
+    }
+    #userInfo {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    #userInfo button, #abrirChatBtn {
+        flex-grow: 1;
+        text-align: center;
+        justify-content: center;
+    }
+}
+.controles {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+#contadorVendidos {
+    color: #2c3e50;
+    font-size: 1em;
+    font-weight: 600;
+    background: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.filtros {
+    display: flex;
+    gap: 8px;
+}
+.filtro {
+    position: relative;
+    padding: 6px 12px;
+    background: #95a5a6;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.filtro.activo {
+    background: #1e90ff;
+    box-shadow: 0 0 8px rgba(30, 144, 255, 0.5);
+}
+#filtroTodo:hover:not(.activo) {
+    background: #3498db;
+}
+#filtroDisponible {
+    background: #0288d1;
+}
+#filtroDisponible.activo {
+    background: #0277bd;
+    box-shadow: 0 0 8px rgba(2, 136, 209, 0.5);
+}
+#filtroDisponible:hover:not(.activo) {
+    background: #039be5;
+}
+#filtroApartado {
+    background: #e74c3c;
+}
+#filtroApartado.activo {
+    background: #c0392b;
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.5);
+}
+#filtroApartado:hover:not(.activo) {
+    background: #d32f2f;
+}
+#filtroPagado {
+    background: #2ecc71;
+}
+#filtroPagado.activo {
+    background: #27ae60;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+}
+#filtroPagado:hover:not(.activo) {
+    background: #4caf50;
+}
+.notificacion-filtro {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff4757;
+    color: #fff;
+    font-size: 0.6em;
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(255, 71, 87, 0.7);
+}
+#limpiarTalonario {
+    padding: 8px 16px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 5px 10px;
+    transition: background 0.2s, transform 0.2s;
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+}
+#limpiarTalonario:hover {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    transform: scale(1.05);
+}
+#talonario, #listaBoletos {
+    max-width: 900px;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 6px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    table-layout: fixed;
+}
+td {
+    width: 10%;
+    height: 50px;
+    background: linear-gradient(135deg, #6dd5fa, #2980b9);
+    color: #fff;
+    font-size: clamp(0.9em, 2.5vw, 1.1em);
+    font-weight: 600;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+td:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+td.seleccionado {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: #fff;
+}
+td.pagado {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: #fff;
+}
+td.pagado > span {
+    font-size: 1.5em; 
+    line-height: 1;
+}
+td.oculta {
+    display: none !important;
+}
+#listaBoletos h2 {
+    color: #2c3e50;
+    margin-top: 30px;
+    text-align: center;
+    width: 100%;
+}
+#lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    gap: 15px;
+    padding: 0;
+    list-style: none; 
+    width: 100%;
+}
+.boleto-card {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 5px solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.boleto-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+.boleto-card.apartado {
+    border-left-color: #e74c3c; 
+}
+.boleto-card.pagado {
+    border-left-color: #2ecc71; 
+}
+.info-numero {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #34495e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.info-nombre {
+    font-size: 1em;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.info-estado {
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.boleto-card.apartado .info-estado {
+    background: #fbe6e4;
+    color: #e74c3c;
+}
+.boleto-card.pagado .info-estado {
+    background: #e4fbe7;
+    color: #2ecc71;
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.cerrar {
+    float: right;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #333;
+}
+.modal-content h2 {
+    margin: 0 0 15px;
+    color: #2c3e50;
+    font-size: 1.4em;
+}
+.modal-content p {
+    color: #34495e;
+    font-size: 1em;
+    margin: 10px 0 20px;
+}
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.modal-content label {
+    font-size: 1em;
+    color: #34495e;
+}
+.modal-content input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+.modal-content .botones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.modal-content button {
+    padding: 10px;
+    background: #2980b9;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.2s;
+    flex: 1;
+    min-width: 100px;
+}
+.modal-content button:hover {
+    background: #3498db;
+}
+.modal-content #eliminarBoleto {
+    background: #e74c3c;
+}
+.modal-content #eliminarBoleto:hover {
+    background: #c0392b;
+}
+.modal-content #marcarPago {
+    background: #27ae60;
+}
+.modal-content #marcarPago:hover {
+    background: #2ecc71;
+}
+.modal-content #marcarPago:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+}
+.modal-content #enviarWhatsApp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: #25d366; 
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.2s;
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+    text-decoration: none; 
+    font-weight: 600; 
+}
+.modal-content #enviarWhatsApp:hover {
+    background: #128c7e;
+}
+#modalConfirmarLimpieza .modal-content p,
+#modalConfirmarEliminacion .modal-content p {
+    color: #34495e;
+    font-size: 1em;
+    margin: 10px 0 20px;
+}
+#modalConfirmarLimpieza .botones,
+#modalConfirmarEliminacion .botones {
+    justify-content: space-between;
+}
+#confirmarLimpieza,
+#confirmarEliminacion { 
+    background: #e74c3c;
+}
+#confirmarLimpieza:hover,
+#confirmarEliminacion:hover { 
+    background: #c0392b;
+}
+#cancelarLimpieza,
+#cancelarEliminacion { 
+    background: #7f8c8d;
+}
+#cancelarLimpieza:hover,
+#cancelarEliminacion:hover { 
+    background: #95a5a6;
+}
+.notificacion {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #00ff7f;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 255, 127, 0.7);
+    z-index: 2000;
+    display: none;
+    animation: slideIn 0.5s ease forwards, slideOut 0.5s ease 2.5s forwards;
+}
+.notificacion p {
+    margin: 0;
+    font-size: 1em;
+    font-weight: 600;
+}
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+.icono {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #1e90ff, #ff4757);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 0 10px rgba(30, 144, 255, 0.5), 0 0 15px rgba(255, 71, 87, 0.5);
+    animation: borderGlow 3s infinite alternate;
+}
+@keyframes borderGlow {
+    0% {
+        box-shadow: 0 0 10px rgba(30, 144, 255, 0.5), 0 0 15px rgba(255, 71, 87, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(30, 144, 255, 0.7), 0 0 20px rgba(255, 71, 87, 0.7);
+    }
+}
+.boleto {
+    width: 40.5px;
+    height: 20.75px;
+    background: linear-gradient(135deg, #1e90ff, #ff4757);
+    border-radius: 2.5px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-10deg) translateY(1.25px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4), 0 0 5px rgba(30, 144, 255, 0.3);
+}
+.numero {
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 7px;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+}
+.check {
+    width: 6px;
+    height: 6px;
+    background: #00ff7f;
+    border-radius: 50%;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    box-shadow: 0 0 5px rgba(0, 255, 127, 0.7);
+}
+.check::before {
+    content: '';
+    position: absolute;
+    width: 1.25px;
+    height: 2.5px;
+    background: #ffffff;
+    transform: rotate(45deg);
+    top: 1.5px;
+    left: 2.25px;
+}
+.check::after {
+    content: '';
+    position: absolute;
+    width: 1.25px;
+    height: 1.25px;
+    background: #ffffff;
+    transform: rotate(-45deg);
+    top: 2.5px;
+    left: 1.75px;
+}
+@media (max-width: 600px) {
+    table {
+        border-spacing: 4px;
+    }
+    td {
+        height: 40px;
+        font-size: clamp(0.8em, 2.2vw, 0.9em);
+    }
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+    .modal-content .botones {
+        flex-direction: column;
+    }
+    .icono {
+        width: 38px;
+        height: 38px;
+    }
+    .boleto {
+        width: 28.875px;
+        height: 19.3125px;
+        border-radius: 2px;
+    }
+    .numero {
+        font-size: 5px;
+    }
+    .check {
+        width: 4.5px;
+        height: 4.5px;
+        top: -1.5px;
+        right: -1.5px;
+    }
+    .check::before {
+        width: 1mm;
+        height: 2mm;
+        top: 1.2mm;
+        left: 1.8mm;
+    }
+    .check::after {
+        width: 1mm;
+        height: 1mm;
+        top: 2mm;
+        left: 1.5mm;
+    }
+    .controles {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .filtros {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+    .filtro {
+        padding: 5px 10px;
+        font-size: 0.7em;
+    }
+    .notificacion-filtro {
+        top: -6px;
+        right: -6px;
+        font-size: 0.5em;
+        padding: 1px 4px;
+    }
+    #contadorVendidos {
+        font-size: 0.9em;
+        padding: 4px 8px;
+    }
+    #limpiarTalonario {
+        padding: 8px 16px;
+        font-size: 0.9em;
+    }
+    .notificacion {
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+    
+    #lista {
+        grid-template-columns: 1fr;
+    }
+    
+}
+@media (max-width: 400px) {
+    table {
+        border-spacing: 3px;
+    }
+    td {
+        height: 30px;
+        font-size: clamp(0.7em, 2vw, 0.8em);
+    }
+}
+    </style>
+    <link rel="icon" id="favicon" type="image/png" href="icono-talonariodigital.png">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="icono">
+                <div class="boleto">
+                    <span class="numero">Rifa</span>
+                    <div class="check"></div>
+                </div>
+            </div>
+            <h1>TalonarioDigital</h1>
+        </div>
+
+        <div id="userInfo" style="display: none;">
+            <p id="emailDisplay"></p> 
+            
+            <button id="abrirPerfilBtn">
+                <i class="fas fa-user-circle"></i> Perfil
+            </button>
+            
+            <a href="admin.html" id="abrirChatBtn">
+                <i class="fas fa-comments"></i> Chat
+                <span id="chatNotificationBadge">!</span>
+            </a>
+            
+            <button id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </div>
+        
+        <p id="subtituloPrincipal">Verificando sesión...</p>
+    </header>
+
+    <div id="talonarioView" style="display: none; width: 100%; max-width: 900px; flex-direction: column; align-items: center;">
+        <div class="controles">
+            <span id="contadorVendidos">Vendidos: 0/100</span>
+            <div class="filtros">
+                <button id="filtroTodo" class="filtro activo">Todo <span class="notificacion-filtro" id="contadorTodo">100</span></button>
+                <button id="filtroDisponible" class="filtro">Disponible <span class="notificacion-filtro" id="contadorDisponible">100</span></button>
+                <button id="filtroApartado" class="filtro">Apartado <span class="notificacion-filtro" id="contadorApartado">0</span></button>
+                <button id="filtroPagado" class="filtro">Pagado <span class="notificacion-filtro" id="contadorPagado">0</span></button>
+            </div>
+        </div>
+        <div id="talonario" style="margin-top: 20px;">
+            </div>
+        <button id="limpiarTalonario" style="display: none;">Clic Para Nueva Rifa</button>
+
+        <div id="listaBoletos">
+            <h2>Lista de Boletos</h2>
+            <div id="lista"></div> 
+        </div>
+    </div>
+
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="cerrarModal" class="cerrar">×</span>
+            <h2><span id="modalTitulo">Registrar</span> Boleto <span id="numeroBoleto"></span></h2>
+            <form id="formRegistro">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="celularInput">Número de Celular (con código de área):</label>
+                <input type="tel" id="celularInput" name="celularInput" required placeholder="Ej: 3155445183 o 573155445183" style="flex-grow: 1;">
+                
+                <input type="hidden" id="celular" name="celular"> 
+                <div class="botones">
+                    <button type="submit">Guardar</button>
+                    <button type="button" id="eliminarBoleto" style="display: none;">Eliminar</button>
+                    <button type="button" id="marcarPago" style="display: none;">Marcar como Pagado</button>
+                    <a id="enviarWhatsApp" target="_blank" style="display: none;">
+                        Notificar por WhatsApp
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="modalConfirmarEliminacion" class="modal">
+        <div class="modal-content">
+            <span id="cerrarModalConfirmarEliminacion" class="cerrar">×</span>
+            <h2>Confirmar Eliminación</h2>
+            <p id="mensajeConfirmacionEliminar">¿Estás seguro de que deseas eliminar el boleto N° **? Esta acción es irreversible.</p>
+            <div class="botones">
+                <button id="confirmarEliminacion">Sí, Eliminar</button>
+                <button id="cancelarEliminacion">No, Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalConfirmarLimpieza" class="modal">
+        <div class="modal-content">
+            <span id="cerrarModalConfirmar" class="cerrar">×</span>
+            <h2>Confirmar Nueva Rifa</h2>
+            <p>¿Estás seguro de que deseas limpiar el talonario para iniciar una nueva rifa? Esto eliminará todos tus datos.</p>
+            <div class="botones">
+                <button id="confirmarLimpieza">Confirmar</button>
+                <button id="cancelarLimpieza">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="perfilModal" class="modal" style="z-index: 1050;">
+        <div class="modal-content">
+            <span id="cerrarPerfilModal" class="cerrar">×</span>
+            <h2>Gestión de Cuenta</h2>
+            
+            <p style="margin-top: 5px; font-weight: 600; color: #1e90ff;">
+                Correo: <span id="userEmailDisplayModal">Cargando...</span>
+            </p>
+
+            <h3 style="margin-top: 20px; color: #34495e;">Cambiar Contraseña</h3>
+            <form id="cambioContrasenaForm" style="gap: 15px;">
+                <label for="currentPassword">Contraseña Actual:</label>
+                <input type="password" id="currentPassword" required>
+
+                <label for="newPassword">Nueva Contraseña (mín. 6 caracteres):</label>
+                <input type="password" id="newPassword" required>
+                
+                <button type="submit" id="guardarContrasenaBtn" style="background: #2ecc71; margin-top: 10px;">
+                    Guardar Nueva Contraseña
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="notificacion" class="notificacion">
+        <p id="mensajeNotificacion"></p>
+    </div>
+    
+    
+<script type="module">
+    // Importar las funciones necesarias de Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+    import { 
+        getFirestore, 
+        collection, 
+        doc, 
+        getDocs, 
+        getDoc, // <- Importación necesaria para leer el timestamp
+        setDoc, 
+        updateDoc, 
+        deleteDoc, 
+        writeBatch,
+        onSnapshot,
+        query, 
+        where,
+        orderBy, // <- Importación necesaria para ordenar
+        limit 
+    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+    import { 
+        getAuth, 
+        signOut, 
+        onAuthStateChanged,
+        EmailAuthProvider,
+        reauthenticateWithCredential,
+        updatePassword             
+    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+
+
+    // ** REEMPLAZA ESTO CON TU CONFIGURACIÓN REAL DE FIREBASE **
+    const firebaseConfig = {
+        apiKey: "AIzaSyDY5KBUwbDwjeCYY7ILXkRB5EJBVoVAmF0", 
+        authDomain: "talonario-rifa.firebaseapp.com",
+        projectId: "talonario-rifa",
+        storageBucket: "talonario-rifa.appspot.com",
+        messagingSenderId: "987446023081",
+        appId: "1:987446023081:web:150e8d7a94975593ac2ab8",
+        measurementId: "G-FWH8F9SVFM"
+    };
+
+    // Inicializar Firebase, Firestore y Auth
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app); 
+    
+    // --- VARIABLES DE ESTADO ---
+    let uidUsuarioActual = null; 
+    let boletosRef; 
+    let unsubscribe = null; 
+    let unsubscribeChatNotifications = null; 
+
+    let filtroActivo = 'todo';
+    let datosActuales = { seleccionados: [], pagados: [], datosBoletos: {} }; 
+    let numeroBoletoActual = null; 
+    // ----------------------------
+
+    // --- FUNCIONES CRUD DINÁMICAS (DEPENDEN DE uidUsuarioActual) ---
+    
+    function obtenerBoletosRef(uid) {
+        return collection(db, 'users', uid, 'rifas');
+    }
+    
+    async function guardarBoleto(numero, data) {
+        if (!uidUsuarioActual) throw new Error("Usuario no autenticado.");
+        await setDoc(doc(boletosRef, numero), data);
+    }
+    
+    async function actualizarEstadoBoleto(numero, estado) {
+        if (!uidUsuarioActual) throw new Error("Usuario no autenticado.");
+        await updateDoc(doc(boletosRef, numero), { estado: estado });
+    }
+    
+    async function eliminarBoleto(numero) {
+        if (!uidUsuarioActual) throw new Error("Usuario no autenticado.");
+        await deleteDoc(doc(boletosRef, numero)); 
+    }
+    
+    async function limpiarTodaColeccion() {
+        if (!uidUsuarioActual) throw new Error("Usuario no autenticado.");
+        const snapshot = await getDocs(boletosRef);
+        const batch = writeBatch(db); 
+        
+        snapshot.docs.forEach((d) => {
+            batch.delete(d.ref);
+        });
+        
+        await batch.commit();
+    }
+    
+    // 🚀 --- FUNCIÓN PARA INICIAR OYENTE DE NOTIFICACIONES DEL CHAT (CLAVE) ---
+    function iniciarOyenteNotificacionesChat() {
+        if (!uidUsuarioActual) return;
+        
+        // 1. Detener oyente anterior
+        if (unsubscribeChatNotifications) {
+            unsubscribeChatNotifications();
+            unsubscribeChatNotifications = null;
+        }
+
+        const badge = document.getElementById('chatNotificationBadge');
+        const chatButton = document.getElementById('abrirChatBtn');
+        
+        const metadataRef = doc(db, "users", uidUsuarioActual, "metadata", "chatStatus");
+        const chatRef = collection(db, "chats"); 
+
+        console.log(`Estableciendo oyente de notificaciones de chat para UID: ${uidUsuarioActual}`);
+
+        // 2. Establecer oyente en el documento de metadatos del usuario.
+        // Esto se dispara cada vez que el usuario lee el chat y actualiza su timestamp.
+        unsubscribeChatNotifications = onSnapshot(metadataRef, async (metadataDoc) => {
+            let lastReadTimestamp = null;
+
+            if (metadataDoc.exists()) {
+                lastReadTimestamp = metadataDoc.data().lastReadTimestamp;
+            }
+
+            // 3. Obtener el último mensaje del chat global para comparar.
+            const qLastMessage = query(chatRef, orderBy("timestamp", "desc"), limit(1));
+            const lastMessageSnapshot = await getDocs(qLastMessage);
+            
+            let mensajesNoLeidos = 0;
+
+            if (!lastMessageSnapshot.empty) {
+                const lastMessage = lastMessageSnapshot.docs[0].data();
+                const lastMessageTimestamp = lastMessage.timestamp;
+                const isMyOwnMessage = lastMessage.uid === uidUsuarioActual; // No te avises a ti mismo
+
+                // Verificar si el último mensaje es posterior a la última lectura.
+                if (lastMessageTimestamp && lastReadTimestamp) {
+                    // Si el timestamp del mensaje es mayor al timestamp de mi última lectura
+                    if (lastMessageTimestamp.toMillis() > lastReadTimestamp.toMillis() && !isMyOwnMessage) {
+                        mensajesNoLeidos = 1; // Basta con saber que hay uno nuevo.
+                    }
+                } 
+                // Si nunca he leído (lastReadTimestamp es null) y no es mi mensaje, hay 1 nuevo.
+                else if (!lastReadTimestamp && !isMyOwnMessage) {
+                    mensajesNoLeidos = 1;
+                }
+            }
+
+
+            if (mensajesNoLeidos > 0) { 
+                badge.textContent = '!'; // O usar la cantidad si decides hacer un query más amplio
+                badge.style.display = 'block';
+                chatButton.classList.add('notificacion-activa');
+            } else {
+                badge.style.display = 'none';
+                chatButton.classList.remove('notificacion-activa');
+            }
+
+        }, (error) => {
+            console.error("Error al escuchar notificaciones de chat:", error);
+            badge.style.display = 'none'; 
+            chatButton.classList.remove('notificacion-activa');
+        });
+    }
+
+    
+    // --- FUNCIÓN DE TIEMPO REAL DINÁMICA DE RIFAS (Se mantiene igual) ---
+    function iniciarOyenteTiempoReal() {
+        if (!uidUsuarioActual) return;
+        
+        if (unsubscribe) {
+            unsubscribe();
+            unsubscribe = null;
+        }
+
+        boletosRef = obtenerBoletosRef(uidUsuarioActual);
+        
+        console.log(`Estableciendo oyente de tiempo real para UID: ${uidUsuarioActual}`);
+        
+        unsubscribe = onSnapshot(boletosRef, (snapshot) => {
+            
+            let seleccionados = [];
+            let pagados = [];
+            let datosBoletos = {};
+            
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const numero = doc.id;
+                datosBoletos[numero] = data;
+
+                if (data.estado === 'apartado') {
+                    seleccionados.push(numero);
+                } else if (data.estado === 'pagado') {
+                    pagados.push(numero);
+                }
+            });
+            
+            datosActuales = { seleccionados, pagados, datosBoletos }; 
+
+            generarTalonario(datosActuales.seleccionados, datosActuales.pagados, datosActuales.datosBoletos);
+            
+            actualizarControles(datosActuales.seleccionados, datosActuales.pagados);
+            generarListaBoletos(datosActuales.seleccionados, datosActuales.pagados, datosActuales.datosBoletos); 
+            verificarTalonarioCompleto(datosActuales.pagados); 
+            
+            console.log('Vista actualizada por evento de Firestore.');
+
+        }, (error) => {
+            console.error('Error en el oyente de Firestore:', error);
+            document.getElementById('talonario').innerHTML = '<p style="color: red;">Error al cargar el talonario: ' + error.message + '</p>';
+            mostrarNotificacion('Error de conexión en tiempo real con Firebase.');
+        });
+    }
+
+    // --- (Resto de funciones: setupPerfilListeners, setupAuthListeners, etc. se mantienen igual) ---
+
+    // --- MANEJO DE AUTENTICACIÓN (GUARDIA DE SEGURIDAD) ---
+
+    function setupAuthListeners() {
+
+        document.getElementById('logoutBtn').onclick = async () => {
+            try {
+                await signOut(auth);
+                mostrarNotificacion("¡Sesión cerrada con éxito!");
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+                mostrarNotificacion("Error al cerrar sesión.");
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            const talonarioView = document.getElementById('talonarioView');
+            const userInfo = document.getElementById('userInfo');
+            const subtituloPrincipal = document.getElementById('subtituloPrincipal');
+            
+            // Ocultar el contenido por defecto
+            talonarioView.style.display = 'none'; 
+            userInfo.style.display = 'none';
+            subtituloPrincipal.textContent = 'Verificando sesión...';
+
+
+            if (user) {
+                // USUARIO AUTENTICADO
+                uidUsuarioActual = user.uid;
+                
+                // MOSTRAR EL TALONARIO
+                talonarioView.style.display = 'flex'; 
+                
+                userInfo.style.display = 'flex'; // Usar flex para los botones
+                
+                document.getElementById('emailDisplay').textContent = user.email; 
+                
+                setupPerfilListeners(); 
+
+                subtituloPrincipal.textContent = 'Haz Clic en un número para apartalo, editarlo o pagarlo';
+                
+                // 1. Iniciar la escucha de datos de Rifas
+                if (!unsubscribe) {
+                    iniciarOyenteTiempoReal(); 
+                }
+                
+                // 2. Iniciar la escucha de Notificaciones del Chat
+                if (!unsubscribeChatNotifications) { 
+                    iniciarOyenteNotificacionesChat();
+                }
+                
+            } else {
+                // NINGÚN USUARIO: REDIRECCIÓN INMEDIATA
+                uidUsuarioActual = null;
+                subtituloPrincipal.textContent = 'Redirigiendo al login...';
+
+                // Detener los oyentes
+                if (unsubscribe) {
+                    unsubscribe();
+                    unsubscribe = null;
+                }
+                if (unsubscribeChatNotifications) { 
+                    unsubscribeChatNotifications();
+                    unsubscribeChatNotifications = null;
+                }
+                
+                // REDIRECCIÓN DE SEGURIDAD
+                window.location.href = 'index.html'; 
+            }
+        });
+    }
+
+    // --- (Resto de funciones se mantienen igual) ---
+
+    async function handleChangePassword(e) {
+        e.preventDefault();
+        
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        
+        const user = auth.currentUser; 
+
+        if (!user || !user.email) {
+            mostrarNotificacion("⚠️ Error: No hay sesión activa.");
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            mostrarNotificacion("⚠️ Error: La nueva contraseña debe tener al menos 6 caracteres.");
+            return;
+        }
+
+        try {
+            const credential = EmailAuthProvider.credential(user.email, currentPassword);
+            await reauthenticateWithCredential(user, credential);
+            await updatePassword(user, newPassword);
+            
+            mostrarNotificacion("✅ Contraseña actualizada con éxito. Cerrando sesión...");
+            
+            document.getElementById('cambioContrasenaForm').reset();
+            document.getElementById('perfilModal').style.display = 'none';
+
+            await signOut(auth);
+            window.location.href = 'index.html';
+
+        } catch (error) {
+            let msg = 'Error desconocido al cambiar la contraseña.';
+            if (error.code === 'auth/wrong-password') {
+                msg = 'Contraseña actual incorrecta.';
+            } else if (error.code === 'auth/requires-recent-login') {
+                msg = 'Por seguridad, debes iniciar sesión de nuevo para cambiar tu contraseña.';
+            } else if (error.code === 'auth/weak-password') {
+                msg = 'La nueva contraseña es muy débil.';
+            }
+            mostrarNotificacion(`⚠️ Error: ${msg}`);
+        }
+    }
+
+    function setupPerfilListeners() {
+        const perfilModal = document.getElementById('perfilModal');
+        const abrirPerfilBtn = document.getElementById('abrirPerfilBtn');
+        const cerrarPerfilModal = document.getElementById('cerrarPerfilModal');
+        const cambioContrasenaForm = document.getElementById('cambioContrasenaForm');
+        const userEmailDisplayModal = document.getElementById('userEmailDisplayModal');
+        const emailDisplayHeader = document.getElementById('emailDisplay');
+
+        cambioContrasenaForm.addEventListener('submit', handleChangePassword);
+
+        abrirPerfilBtn.onclick = () => {
+            userEmailDisplayModal.textContent = auth.currentUser ? auth.currentUser.email : 'Cargando...';
+            perfilModal.style.display = 'flex';
+        };
+
+        cerrarPerfilModal.onclick = () => {
+            perfilModal.style.display = 'none';
+            document.getElementById('cambioContrasenaForm').reset(); 
+        };
+
+        perfilModal.onclick = (event) => {
+            if (event.target === perfilModal) {
+                perfilModal.style.display = 'none';
+                document.getElementById('cambioContrasenaForm').reset();
+            }
+        };
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Paso 0: DOM cargado, inicializando TalonarioDigital...');
+        
+        // Inicialización de filtros
+        document.getElementById('filtroTodo').classList.add('activo');
+        document.getElementById('filtroDisponible').addEventListener('click', () => aplicarFiltro('disponible'));
+        document.getElementById('filtroApartado').addEventListener('click', () => aplicarFiltro('apartado'));
+        document.getElementById('filtroPagado').addEventListener('click', () => aplicarFiltro('pagado'));
+        document.getElementById('filtroTodo').addEventListener('click', () => aplicarFiltro('todo'));
+        
+        inicializarModales(); 
+        
+        // Configurar los listeners de autenticación al final
+        setupAuthListeners();
+    });
+
+    function generarTalonario(seleccionados, pagados, datosBoletos) { 
+        const talonario = document.getElementById('talonario');
+        if (!talonario) return;
+        
+        talonario.innerHTML = ''; 
+
+        try {
+            const tabla = document.createElement('table');
+            let numero = 0;
+            for (let i = 0; i < 10; i++) {
+                const fila = document.createElement('tr');
+                for (let j = 0; j < 10; j++) {
+                    const celda = document.createElement('td');
+                    const numStr = numero.toString().padStart(2, '0');
+                    celda.dataset.numero = numStr;
+
+                    const isPagado = pagados.includes(numStr);
+                    const isSeleccionado = seleccionados.includes(numStr);
+
+                    if (isPagado) {
+                        celda.innerHTML = `<span style="font-size: 1.5em; line-height: 1;">💵</span>`; 
+                    } else {
+                        celda.textContent = numStr;
+                    }
+
+                    celda.classList.remove('seleccionado', 'pagado', 'oculta');
+
+                    if (isPagado) {
+                        celda.classList.add('pagado');
+                    } else if (isSeleccionado) {
+                        celda.classList.add('seleccionado');
+                    }
+                    
+                    if (filtroActivo === 'disponible' && (isSeleccionado || isPagado)) {
+                        celda.classList.add('oculta');
+                    } else if (filtroActivo === 'apartado' && !isSeleccionado) {
+                        celda.classList.add('oculta');
+                    } else if (filtroActivo === 'pagado' && !isPagado) {
+                        celda.classList.add('oculta');
+                    } 
+
+
+                    celda.addEventListener('click', function () {
+                        mostrarModal(this, isPagado ? 'ver' : (isSeleccionado ? 'editar' : 'registrar'), datosActuales.datosBoletos); 
+                    });
+
+                    fila.appendChild(celda);
+                    numero++;
+                }
+                tabla.appendChild(fila);
+            }
+            talonario.appendChild(tabla);
+        } catch (error) {
+            console.error('Error al crear la tabla:', error);
+            talonario.innerHTML = '<p style="color: red;">Error al crear la tabla: ' + error.message + '</p>';
+        }
+    }
+    
+    function mostrarModalEliminacion(numero) {
+        numeroBoletoActual = numero; 
+        const modal = document.getElementById('modalConfirmarEliminacion');
+        const mensaje = document.getElementById('mensajeConfirmacionEliminar');
+        
+        mensaje.innerHTML = `¿Estás seguro de que deseas eliminar el boleto N° **${numero.padStart(2, '0')}**? Esta acción es irreversible.`;
+        
+        modal.style.display = 'flex';
+        document.getElementById('modal').style.display = 'none'; 
+    }
+
+    async function mostrarModal(celda, modo, datosBoletos) {
+        
+        const modal = document.getElementById('modal');
+        const modalTitulo = document.getElementById('modalTitulo');
+        const numeroBoleto = document.getElementById('numeroBoleto');
+        const form = document.getElementById('formRegistro');
+        const nombreInput = document.getElementById('nombre');
+        
+        const celularInput = document.getElementById('celularInput'); 
+        const celularHidden = document.getElementById('celular');
+        
+        const eliminarBoletoBtn = document.getElementById('eliminarBoleto');
+        const marcarPago = document.getElementById('marcarPago');
+        const numero = celda.dataset.numero;
+        const enviarWhatsApp = document.getElementById('enviarWhatsApp'); 
+
+        modalTitulo.textContent = modo === 'editar' ? 'Editar' : (modo === 'ver' ? 'Ver' : 'Registrar');
+        numeroBoleto.textContent = numero.padStart(2, '0');
+        modal.style.display = 'flex';
+        
+        const datos = datosBoletos[numero];
+        if (datos) {
+            nombreInput.value = datos.nombre || '';
+            
+            const celularCompleto = datos.celular || '';
+            celularInput.value = celularCompleto.replace(/[^0-9]/g, '') || ''; 
+            
+        } else {
+            nombreInput.value = '';
+            celularInput.value = '';
+        }
+
+        eliminarBoletoBtn.style.display = (modo === 'editar' || modo === 'ver') ? 'block' : 'none';
+        marcarPago.style.display = modo === 'editar' ? 'block' : 'none';
+        marcarPago.disabled = celda.classList.contains('pagado'); 
+        nombreInput.disabled = modo === 'ver';
+        celularInput.disabled = modo === 'ver';
+        form.querySelector('button[type="submit"]').style.display = modo === 'ver' ? 'none' : 'block';
+
+
+        if (modo === 'ver' || modo === 'editar') {
+            enviarWhatsApp.style.display = 'flex';
+            
+            const datosCliente = datos || {};
+            const numeroClienteLimpio = datosCliente.celular ? datosCliente.celular.replace(/[^0-9]/g, '') : '';
+            const nombreCliente = datosCliente.nombre || 'el cliente';
+            const estadoActual = celda.classList.contains('pagado') ? 'PAGADO' : 'APARTADO';
+            const mensajeBase = `Hola ${nombreCliente}. Confirmo que el número ${numero.padStart(2, '0')} ha sido ${estadoActual} exitosamente. Gracias por participar.`;
+            const mensajeCodificado = encodeURIComponent(mensajeBase);
+            
+            if (numeroClienteLimpio.length >= 10) { 
+                enviarWhatsApp.href = `https://api.whatsapp.com/send?phone=${numeroClienteLimpio}&text=${mensajeCodificado}`; 
+                enviarWhatsApp.textContent = 'Notificar por WhatsApp';
+                enviarWhatsApp.style.background = '#25d366';
+            } else {
+                enviarWhatsApp.href = '#';
+                enviarWhatsApp.textContent = 'Sin Celular (No Válido)';
+                enviarWhatsApp.style.background = '#95a5a6';
+            }
+        } else {
+            enviarWhatsApp.style.display = 'none';
+        }
+
+
+        // --- EVENTO SUBMIT (Guardar/Editar) ---
+        form.onsubmit = async function (e) {
+            e.preventDefault();
+            
+            const celularCompleto = celularInput.value.replace(/[^0-9]/g, '');
+            celularHidden.value = celularCompleto; 
+            
+            const nuevoBoletoData = {
+                numero: numero,
+                nombre: nombreInput.value,
+                celular: celularCompleto,
+                estado: celda.classList.contains('pagado') ? 'pagado' : 'apartado' 
+            };
+            
+            try {
+                await guardarBoleto(numero, nuevoBoletoData);
+                modal.style.display = 'none';
+                mostrarNotificacion(`Boleto ${numero.padStart(2, '0')} guardado/editado.`);
+            } catch (error) {
+                console.error('Error al guardar en Firebase:', error);
+                mostrarNotificacion('Error al guardar: ' + error.message);
+            }
+        };
+        // -------------------------------------
+
+
+        // --- EVENTO ELIMINAR (Llama al nuevo modal) ---
+        eliminarBoletoBtn.onclick = function () {
+            mostrarModalEliminacion(numero);
+        };
+        // -----------------------------------
+
+        // --- EVENTO MARCAR PAGO ---
+        marcarPago.onclick = async function () {
+            if (marcarPago.disabled) return;
+            try {
+                await actualizarEstadoBoleto(numero, 'pagado');
+                modal.style.display = 'none';
+                mostrarNotificacion(`Boleto ${numero.padStart(2, '0')} marcado como PAGADO.`);
+            } catch (error) {
+                console.error('Error al marcar pago en Firebase:', error);
+                mostrarNotificacion('Error al marcar pago: ' + error.message);
+            }
+        };
+        // --------------------------
+
+        document.getElementById('cerrarModal').onclick = function () {
+            modal.style.display = 'none';
+        };
+
+        modal.onclick = function (e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+    }
+
+    function actualizarControles(seleccionados, pagados) {
+        const contador = document.getElementById('contadorVendidos');
+        const contadorTodo = document.getElementById('contadorTodo');
+        const contadorDisponible = document.getElementById('contadorDisponible');
+        const contadorApartado = document.getElementById('contadorApartado');
+        const contadorPagado = document.getElementById('contadorPagado');
+
+        const total = 100;
+        const vendidos = seleccionados.length + pagados.length;
+        const disponibles = total - vendidos;
+
+        contador.textContent = `Vendidos: ${vendidos}/100`;
+        contadorTodo.textContent = total;
+        contadorDisponible.textContent = disponibles;
+        contadorApartado.textContent = seleccionados.length;
+        contadorPagado.textContent = pagados.length;
+    }
+
+    function generarListaBoletos(seleccionados, pagados, datosBoletos) {
+        const listaDiv = document.getElementById('lista');
+        if (!listaDiv) return;
+        listaDiv.innerHTML = ''; 
+
+        const todosBoletos = [
+            ...seleccionados.map(num => ({ numero: num, estado: 'apartado' })),
+            ...pagados.map(num => ({ numero: num, estado: 'pagado' }))
+        ].sort((a, b) => parseInt(a.numero) - parseInt(b.numero));
+
+        todosBoletos.forEach(boleto => {
+            const numeroFormateado = boleto.numero.padStart(2, '0');
+            const datos = datosBoletos[boleto.numero] || { nombre: 'Sin nombre', celular: 'Sin celular' };
+            
+            const card = document.createElement('div');
+            card.classList.add('boleto-card', boleto.estado);
+            
+            const iconoPagado = boleto.estado === 'pagado' ? '<span style="font-size: 1.2em; margin-left: 5px;">💵</span>' : '';
+            
+            card.innerHTML = `
+                <div class="info-numero">
+                    <span>Número **${numeroFormateado}**${iconoPagado}</span>
+                    <span class="info-estado">${boleto.estado}</span>
+                </div>
+                <div class="info-nombre">${datos.nombre}</div>
+            `;
+            
+            listaDiv.appendChild(card);
+        });
+
+        if (todosBoletos.length === 0) {
+            const p = document.createElement('p');
+            p.textContent = 'No hay boletos apartados ni pagados.';
+            p.style.color = '#7f8c8d';
+            p.style.textAlign = 'center';
+            p.style.gridColumn = '1 / -1'; 
+            listaDiv.appendChild(p);
+        }
+    }
+
+    function aplicarFiltro(tipo) {
+        filtroActivo = tipo;
+        const botonesFiltro = document.querySelectorAll('.filtro');
+        botonesFiltro.forEach(btn => btn.classList.remove('activo'));
+        document.getElementById(`filtro${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`).classList.add('activo');
+        
+        generarTalonario(datosActuales.seleccionados, datosActuales.pagados, datosActuales.datosBoletos);
+    }
+
+    function verificarTalonarioCompleto(pagados) {
+        const limpiarBtn = document.getElementById('limpiarTalonario');
+        if (pagados.length === 100) {
+            limpiarBtn.style.display = 'block';
+        } else {
+            limpiarBtn.style.display = 'none';
+        }
+    }
+
+    function inicializarModales() {
+        // --- Modal de Limpieza de Talonario ---
+        const limpiarBtn = document.getElementById('limpiarTalonario');
+        const modalConfirmar = document.getElementById('modalConfirmarLimpieza');
+        const confirmarLimpieza = document.getElementById('confirmarLimpieza');
+        const cancelarLimpieza = document.getElementById('cancelarLimpieza');
+        const cerrarModalConfirmar = document.getElementById('cerrarModalConfirmar');
+
+        limpiarBtn.onclick = function () {
+            modalConfirmar.style.display = 'flex';
+        };
+
+        confirmarLimpieza.onclick = async function () {
+            try {
+                await limpiarTodaColeccion();
+                
+                filtroActivo = 'todo';
+                document.getElementById('filtroTodo').classList.add('activo');
+                document.getElementById('filtroDisponible').classList.remove('activo');
+                document.getElementById('filtroApartado').classList.remove('activo');
+                document.getElementById('filtroPagado').classList.remove('activo');
+                
+                modalConfirmar.style.display = 'none';
+                mostrarNotificacion('¡Talonario limpiado exitosamente! Listo para la nueva rifa.');
+            } catch (error) {
+                console.error('Error al limpiar Firebase:', error);
+                mostrarNotificacion('Error al limpiar el talonario: ' + error.message);
+            }
+        };
+
+        cancelarLimpieza.onclick = function () { modalConfirmar.style.display = 'none'; };
+        cerrarModalConfirmar.onclick = function () { modalConfirmar.style.display = 'none'; };
+        modalConfirmar.onclick = function (e) {
+            if (e.target === modalConfirmar) { modalConfirmar.style.display = 'none'; }
+        };
+        
+        // --- Nuevo Modal de Confirmación de Eliminación ---
+        const modalEliminacion = document.getElementById('modalConfirmarEliminacion');
+        const confirmarEliminacion = document.getElementById('confirmarEliminacion');
+        const cancelarEliminacion = document.getElementById('cancelarEliminacion');
+        const cerrarModalEliminacion = document.getElementById('cerrarModalConfirmarEliminacion');
+
+        confirmarEliminacion.onclick = async function () {
+            if (!numeroBoletoActual) return;
+            
+            try {
+                await eliminarBoleto(numeroBoletoActual); 
+                
+                modalEliminacion.style.display = 'none';
+                mostrarNotificacion(`Boleto ${numeroBoletoActual.padStart(2, '0')} eliminado.`);
+                numeroBoletoActual = null; 
+                
+            } catch (error) {
+                console.error('Error al eliminar en Firebase:', error);
+                mostrarNotificacion('Error al eliminar: ' + error.message);
+            }
+        };
+
+        cancelarEliminacion.onclick = function () { 
+            modalEliminacion.style.display = 'none'; 
+        };
+        cerrarModalEliminacion.onclick = function () { 
+            modalEliminacion.style.display = 'none'; 
+        };
+        modalEliminacion.onclick = function (e) {
+            if (e.target === modalEliminacion) { modalEliminacion.style.display = 'none'; }
+        };
+    }
+
+    function mostrarNotificacion(mensaje) {
+        const notificacion = document.getElementById('notificacion');
+        const mensajeNotificacion = document.getElementById('mensajeNotificacion');
+        notificacion.style.background = mensaje.includes('Error') || mensaje.includes('⚠️') ? '#ff4757' : '#00ff7f';
+        notificacion.style.boxShadow = mensaje.includes('Error') || mensaje.includes('⚠️') ? '0 0 15px rgba(255, 71, 87, 0.7)' : '0 0 15px rgba(0, 255, 127, 0.7)';
+        
+        mensajeNotificacion.textContent = mensaje;
+        // Reiniciar la animación
+        notificacion.style.animation = 'none';
+        notificacion.offsetHeight; 
+        notificacion.style.animation = null; 
+
+        notificacion.style.display = 'block';
+    }
+
+</script>
+</body>
+</html>
