@@ -3,161 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Registro - TalonarioDigital</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>TalonarioDigital - Inicio</title>
+    <!-- Fuente y Estilos -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* [Incluye aquí todos los estilos CSS de index.html] */
-        body { /* ... */ }
-        .auth-container { /* ... */ }
-        /* ... */
-        .pin-display { 
-            /* ... Estilos para mostrar el PIN después del registro ... */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #c8d3e6);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .main-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #1e90ff;
+            font-weight: 800;
+            margin-bottom: 5px;
+            font-size: 2em;
+        }
+        p {
+            color: #6c757d;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+        .btn-option {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        /* Estilo Vendedor/Administrador */
+        #btnVendedor {
+            background: linear-gradient(45deg, #1e90ff, #3b82f6);
+            color: white;
+            box-shadow: 0 6px 15px rgba(30, 144, 255, 0.4);
+        }
+        #btnVendedor:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        /* Estilo Cliente/Visitante */
+        #btnCliente {
+            background: #f8f9fa;
+            color: #1e90ff;
+            border: 2px solid #1e90ff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        #btnCliente:hover {
+            background: #e9ecef;
         }
     </style>
 </head>
 <body>
-    <div class="auth-container">
-        <h2 id="authTitle">Iniciar Sesión</h2>
-        
-        <form id="authForm" class="auth-form">
-            <input type="text" id="username" placeholder="Nombre de usuario" style="display:none;">
-            <input type="email" id="email" placeholder="Correo electrónico" required>
-            <input type="password" id="password" placeholder="Contraseña" required>
-            
-            <button type="submit" id="authButton">Ingresar</button>
-        </form>
+    <div class="main-container">
+        <h1>Talonario Digital</h1>
+        <p>¿Cómo deseas acceder a la plataforma?</p>
 
-        <p id="message"></p>
+        <button id="btnVendedor" class="btn-option">
+            <i class="fas fa-store"></i> Acceso Vendedor
+        </button>
 
-        <button id="toggleAuth">¿No tienes cuenta? Regístrate</button>
-        <button id="resetPasswordLink">¿Olvidaste tu contraseña?</button>
+        <button id="btnCliente" class="btn-option">
+            <i class="fas fa-ticket-alt"></i> Ver Mi Rifa (Cliente)
+        </button>
     </div>
 
-<script type="module">
-    // Importar las funciones necesarias de Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import { 
-        getAuth, 
-        signInWithEmailAndPassword, 
-        createUserWithEmailAndPassword, 
-        sendPasswordResetEmail,
-        updateProfile,
-        onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js"; // 💡 getDoc AÑADIDO
-
-
-    // ** REEMPLAZA ESTO CON TU CONFIGURACIÓN REAL DE FIREBASE **
-    const firebaseConfig = {
-        apiKey: "AIzaSyDY5KBUwbDwjeCYY7ILXkRB5EJBVoVAmF0", 
-        authDomain: "talonario-rifa.firebaseapp.com",
-        projectId: "talonario-rifa",
-        storageBucket: "talonario-rifa.appspot.com",
-        messagingSenderId: "987446023081",
-        appId: "1:987446023081:web:150e8d7a94975593ac2ab8",
-        measurementId: "G-FWH8F9SVFM"
+<script>
+    document.getElementById('btnVendedor').onclick = function() {
+        // Redirige al login/registro de Vendedor
+        window.location.href = 'login_vendedor.html'; 
     };
 
-    // Inicializar Firebase, Auth y Firestore
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app); 
-    const db = getFirestore(app);
-
-    // --- VARIABLES DE ESTADO y DOM (Iguales) ---
-    let isLoginMode = true;
-    // ... (restantes elementos del DOM) ...
-
-    // --- MANEJADOR DE EVENTOS PRINCIPAL (Modificación en Registro) ---
-    authForm.onsubmit = async (e) => {
-        e.preventDefault();
-        
-        const username = usernameInput.value.trim();
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-        // ... (Verificación de login/registro) ...
-
-        try {
-            if (isLoginMode) {
-                // Lógica de Login (Igual)
-                await signInWithEmailAndPassword(auth, email, password);
-                showMessage("Inicio de sesión exitoso. Redirigiendo...", false);
-            } else {
-                // Lógica de Registro (Añadir rol: 'vendedor')
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                
-                const newPin = Math.floor(100000 + Math.random() * 900000).toString(); 
-                
-                await updateProfile(user, {
-                    displayName: username
-                });
-
-                // 💡 GUARDAR PIN Y ROL: ASUMIMOS QUE EL QUE SE REGISTRA ES UN VENDEDOR
-                await setDoc(doc(db, "clientes", user.uid), {
-                    pin: newPin,
-                    email: email,
-                    nombre: username,
-                    acceso_concedido: true, 
-                    rol: 'vendedor' // 💡 CAMBIO CLAVE: Asignar el rol de vendedor al registrarse
-                });
-                
-                localStorage.setItem('tempPin', newPin);
-                localStorage.setItem('tempUsername', username);
-                
-                showMessage(`¡Registro exitoso! Tu PIN de acceso es ${newPin}. Iniciando sesión...`, false);
-            }
-
-        } catch (error) {
-            // ... (Manejo de errores es igual) ...
-        }
+    document.getElementById('btnCliente').onclick = function() {
+        // Redirige al acceso por PIN
+        window.location.href = 'acceso_cliente.html'; 
     };
-    
-    // --- MANEJO DE REDIRECCIÓN POR ROL (CAMBIO CLAVE AQUÍ) ---
-
-    onAuthStateChanged(auth, async (user) => { // 💡 Función ASYNC para usar await
-        if (user) {
-            
-            // 1. OBTENER EL ROL DESDE FIRESTORE
-            const userDocSnap = await getDoc(doc(db, "clientes", user.uid));
-            // Si el documento existe, toma el rol. Si no existe, asume 'cliente' (o un valor seguro)
-            const userRole = userDocSnap.exists() ? userDocSnap.data().rol : 'cliente'; 
-
-            // Determinar la página de destino basada en el rol
-            const redirectPage = userRole === 'vendedor' ? 'talonario.html' : 'cliente.html';
-
-            const tempPin = localStorage.getItem('tempPin');
-            const tempUsername = localStorage.getItem('tempUsername');
-
-            if (tempPin) {
-                // Si viene de un REGISTRO NUEVO (mostrando PIN por 5s)
-                const container = document.querySelector('.auth-container');
-                container.innerHTML = `
-                    <h2>¡Bienvenido, ${tempUsername || user.displayName}!</h2>
-                    <p>Tu cuenta ha sido creada exitosamente.</p>
-                    <div class="pin-display">
-                        Tu PIN de Acceso es: <span>${tempPin}</span>
-                        <p style="font-size: 0.7em; margin-top: 10px; font-weight: 400;">Guarda este número. Lo necesitarás para acceder.</p>
-                    </div>
-                    <p id="redirectMsg">Redirigiendo en 5 segundos...</p>
-                `;
-                
-                localStorage.removeItem('tempPin');
-                localStorage.removeItem('tempUsername');
-                
-                setTimeout(() => {
-                    window.location.href = redirectPage; // 💡 Redirección CONDICIONAL
-                }, 5000); 
-
-            } else {
-                // Si viene de un LOGIN NORMAL o ya estaba autenticado
-                window.location.href = redirectPage; // 💡 Redirección CONDICIONAL
-            }
-        }
-    });
-    
-    // ... (El resto de funciones auxiliares son iguales) ...
-    
 </script>
 </body>
 </html>
+
