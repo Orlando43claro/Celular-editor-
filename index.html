@@ -3,101 +3,441 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TalonarioDigital - Inicio</title>
-    <!-- Fuente y Estilos -->
+    <title>TalonarioDigital - Acceso Vendedor</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f0f4f8, #c8d3e6);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-        .main-container {
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-        h1 {
-            color: #1e90ff;
-            font-weight: 800;
-            margin-bottom: 5px;
-            font-size: 2em;
-        }
-        p {
-            color: #6c757d;
-            margin-bottom: 40px;
-            font-weight: 400;
-        }
-        .btn-option {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        /* Estilo Vendedor/Administrador */
-        #btnVendedor {
-            background: linear-gradient(45deg, #1e90ff, #3b82f6);
-            color: white;
-            box-shadow: 0 6px 15px rgba(30, 144, 255, 0.4);
-        }
-        #btnVendedor:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        /* Estilo Cliente/Visitante */
-        #btnCliente {
-            background: #f8f9fa;
-            color: #1e90ff;
-            border: 2px solid #1e90ff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        #btnCliente:hover {
-            background: #e9ecef;
-        }
+
+/* --- 🎨 ESTILOS CSS MEJORADOS Y MODERNOS --- */
+
+body {
+    font-family: 'Poppins', sans-serif;
+    /* Fondo con gradiente más vivo y atractivo */
+    background: linear-gradient(135deg, #84fab0 0%, #1e90ff 100%); 
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centrar verticalmente en la pantalla */
+    min-height: 100vh;
+    position: relative; /* Para posicionar el botón de volver */
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+h1 {
+    color: #fff; /* Texto blanco para el contraste */
+    font-size: clamp(2em, 5vw, 3em);
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra para resaltar */
+    margin: 0;
+}
+
+#subtituloPrincipal {
+    color: #f0f0f0; /* Subtítulo más claro */
+    font-size: clamp(1em, 3vw, 1.2em);
+    margin-top: 10px;
+}
+
+/* --- VISTA DE LOGIN/TALONARIO (CARD ELEGANTE) --- */
+
+.vista {
+    display: none; /* Empieza oculto para evitar el parpadeo (FOUC) */
+    width: 90%;
+    max-width: 400px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px; /* Bordes más suaves */
+    /* Sombra más profunda para un efecto 3D */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
+    margin: 20px 0;
+}
+
+.vista h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.vista form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Estilo de Inputs con iconos */
+.input-group {
+    position: relative;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #95a5a6;
+    font-size: 1em;
+}
+
+.vista input[type="email"], 
+.vista input[type="password"],
+.vista input[type="text"] { 
+    width: 100%;
+    padding: 12px 12px 12px 40px; 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+.vista input:focus {
+    border-color: #1e90ff;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    outline: none;
+}
+
+.vista button {
+    padding: 12px;
+    /* Gradiente atractivo para el botón principal */
+    background: linear-gradient(45deg, #1e90ff, #007bff); 
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 700;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-transform: uppercase;
+}
+
+.vista button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#toggleAuth, #olvidoContrasena, #volverLogin {
+    background: none;
+    color: #1e90ff;
+    border: none;
+    font-size: 0.9em;
+    margin-top: 15px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-align: center;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+#toggleAuth:hover, #olvidoContrasena:hover, #volverLogin:hover {
+    color: #007bff;
+}
+
+/* 🚀 Estilo del botón de Volver al Inicio */
+#backButton {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 8px 15px;
+    background: #34495e;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+#backButton:hover {
+    background: #2c3e50;
+}
+
+
+/* Estilos para notificaciones */
+.notificacion {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #00ff7f;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 255, 127, 0.7);
+    z-index: 2000;
+    display: none;
+    animation: slideIn 0.5s ease forwards, slideOut 0.5s ease 2.5s forwards;
+    font-weight: 600;
+}
+
+/* Ocultar el icono y el boleto del header en el login para simplicidad visual */
+.icono {
+    display: none; 
+}
+
+/* Media Queries para móviles */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    .vista {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 2em;
+    }
+    .notificacion {
+        top: 10px;
+        right: 10px;
+        font-size: 0.9em;
+    }
+}
     </style>
+    <link rel="icon" id="favicon" type="image/png" href="icono-talonariodigital.png">
 </head>
 <body>
-    <div class="main-container">
-        <h1>Talonario Digital</h1>
-        <p>¿Cómo deseas acceder a la plataforma?</p>
+    <a id="backButton" href="inicio.html"><i class="fas fa-arrow-left"></i> Volver a Inicio</a>
 
-        <button id="btnVendedor" class="btn-option">
-            <i class="fas fa-store"></i> Acceso Vendedor
-        </button>
 
-        <button id="btnCliente" class="btn-option">
-            <i class="fas fa-ticket-alt"></i> Ver Mi Rifa (Cliente)
-        </button>
+    <header>
+        <div class="logo">
+            <div class="icono">
+                <div class="boleto">
+                    <span class="numero">Rifa</span>
+                    <div class="check"></div>
+                </div>
+            </div>
+            <h1>TalonarioDigital</h1>
+        </div>
+        <p id="subtituloPrincipal">Verificando sesión...</p>
+    </header>
+
+    <div id="authView" class="vista">
+        <h2 id="authTitle">Iniciar Sesión (Vendedor)</h2>
+        <form id="authForm">
+            <div class="input-group" id="usernameInputGroup" style="display: none;">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="Nombre de Usuario (Apodo)" autocomplete="username">
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="Correo Electrónico" required autocomplete="email">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Contraseña (mín. 6 caracteres)" required autocomplete="current-password">
+            </div>
+            <button type="submit" id="authSubmitBtn">Acceder</button>
+        </form>
+        <button id="toggleAuth">¿No tienes cuenta? Regístrate</button>
+        <button id="olvidoContrasena">¿Olvidaste tu Contraseña?</button> 
+    </div>
+    
+    <div id="recuperacionView" class="vista" style="display: none;">
+        <h2>Recuperar Contraseña</h2>
+        <form id="recuperacionForm">
+             <p style="text-align: center; color: #34495e; margin-bottom: 20px;">Introduce tu correo electrónico para enviarte un enlace de restablecimiento.</p>
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="recuperacionEmail" placeholder="Correo Electrónico" required>
+            </div>
+            <button type="submit" id="recuperacionSubmitBtn">Enviar Enlace</button>
+        </form>
+        <button id="volverLogin">Volver al Login</button>
     </div>
 
-<script>
-    document.getElementById('btnVendedor').onclick = function() {
-        // Redirige al login/registro de Vendedor
-        window.location.href = 'login_vendedor.html'; 
+    <div id="notificacion" class="notificacion" style="display: none;">
+        <p id="mensajeNotificacion"></p>
+    </div>
+
+    
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+    import { 
+        getAuth, 
+        signInWithEmailAndPassword, 
+        createUserWithEmailAndPassword, 
+        sendPasswordResetEmail,
+        updateProfile, 
+        onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+    
+    // Tu configuración de Firebase (¡Asegúrate de que esta sea la real!)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDY5KBUwbDwjeCYY7ILXkRB5EJBVoVAmF0", 
+        authDomain: "talonario-rifa.firebaseapp.com",
+        projectId: "talonario-rifa",
+        storageBucket: "talonario-rifa.appspot.com",
+        messagingSenderId: "987446023081",
+        appId: "1:987446023081:web:150e8d7a94975593ac2ab8",
+        measurementId: "G-FWH8F9SVFM"
     };
 
-    document.getElementById('btnCliente').onclick = function() {
-        // Redirige al acceso por PIN
-        window.location.href = 'acceso_cliente.html'; 
-    };
+    // Inicializar Firebase y Auth
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app); 
+    
+    // Función de notificación simplificada
+    function mostrarNotificacion(mensaje) {
+        const notificacion = document.getElementById('notificacion');
+        const mensajeNotificacion = document.getElementById('mensajeNotificacion');
+        // Cambiar color para errores
+        notificacion.style.background = mensaje.includes('Error') || mensaje.includes('⚠️') ? '#ff4757' : '#00ff7f';
+        notificacion.style.boxShadow = mensaje.includes('Error') || mensaje.includes('⚠️') ? '0 0 15px rgba(255, 71, 87, 0.7)' : '0 0 15px rgba(0, 255, 127, 0.7)';
+        
+        mensajeNotificacion.textContent = mensaje;
+        notificacion.style.animation = 'none';
+        notificacion.offsetHeight; 
+        // Usar keyframes en CSS para animaciones o dejarlo simple
+        notificacion.style.animation = 'slideIn 0.5s ease forwards, slideOut 0.5s ease 2.5s forwards';
+        notificacion.style.display = 'block';
+        setTimeout(() => { notificacion.style.display = 'none'; }, 3000);
+    }
+
+
+    function setupAuthListeners() {
+        // Elementos de la vista de Autenticación
+        const authView = document.getElementById('authView'); 
+        const authForm = document.getElementById('authForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const usernameInput = document.getElementById('username'); 
+        const usernameInputGroup = document.getElementById('usernameInputGroup'); 
+        const toggleAuthBtn = document.getElementById('toggleAuth');
+        const authTitle = document.getElementById('authTitle');
+        const authSubmitBtn = document.getElementById('authSubmitBtn');
+        const olvidoContrasenaBtn = document.getElementById('olvidoContrasena');
+        const subtituloPrincipal = document.getElementById('subtituloPrincipal');
+        
+        // Elementos de la vista de Recuperación
+        const recuperacionView = document.getElementById('recuperacionView');
+        const recuperacionForm = document.getElementById('recuperacionForm');
+        const recuperacionEmailInput = document.getElementById('recuperacionEmail');
+        const volverLoginBtn = document.getElementById('volverLogin');
+        
+        let isLogin = true;
+
+        // --- MANEJO DE VISTAS ---
+
+        function mostrarAuthView() {
+            recuperacionView.style.display = 'none';
+            authView.style.display = 'block';
+            subtituloPrincipal.textContent = 'Inicia sesión para gestionar tu talonario.';
+        }
+        
+        function mostrarRecuperacionView() {
+            authView.style.display = 'none';
+            recuperacionView.style.display = 'block';
+            subtituloPrincipal.textContent = 'Restablecimiento de Contraseña';
+            recuperacionEmailInput.value = emailInput.value;
+        }
+
+        olvidoContrasenaBtn.onclick = mostrarRecuperacionView;
+        volverLoginBtn.onclick = mostrarAuthView;
+
+        // --- LÓGICA DE AUTENTICACIÓN (LOGIN/REGISTRO) ---
+
+        toggleAuthBtn.onclick = () => {
+            isLogin = !isLogin;
+            authTitle.textContent = isLogin ? 'Iniciar Sesión (Vendedor)' : 'Registrarse (Vendedor)';
+            authSubmitBtn.textContent = isLogin ? 'Acceder' : 'Crear Cuenta';
+            toggleAuthBtn.textContent = isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia Sesión';
+            
+            // Mostrar/Ocultar y Requerir campo de usuario
+            usernameInputGroup.style.display = isLogin ? 'none' : 'flex';
+            usernameInput.required = !isLogin; 
+            usernameInput.value = ''; // Limpiar campo al cambiar de vista
+        };
+
+        authForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const username = usernameInput.value.trim(); 
+
+            try {
+                if (isLogin) {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    mostrarNotificacion("¡Sesión iniciada con éxito!");
+                } else {
+                    // 1. Crear usuario
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    
+                    // 2. Actualizar el perfil con el nombre de usuario
+                    await updateProfile(user, {
+                        displayName: username
+                    });
+                    
+                    mostrarNotificacion("¡Registro exitoso! Iniciando sesión...");
+                }
+            } catch (error) {
+                // Manejo de errores
+                let msg = 'Error desconocido. Verifica tu conexión.';
+                if (error.code === 'auth/email-already-in-use') {
+                    msg = 'El correo ya está en uso. ¡Intenta iniciar sesión!';
+                } else if (error.code === 'auth/invalid-email') {
+                    msg = 'Correo inválido.';
+                } else if (error.code === 'auth/weak-password') {
+                    msg = 'Contraseña débil (mín. 6 caracteres).';
+                } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    msg = 'Credenciales incorrectas.';
+                } 
+                mostrarNotificacion(`⚠️ Error: ${msg}`);
+            }
+        };
+        
+        // --- LÓGICA DE RECUPERACIÓN DE CONTRASEÑA ---
+
+        recuperacionForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const email = recuperacionEmailInput.value;
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                mostrarNotificacion(`✅ Enlace enviado a ${email}. Revisa tu bandeja de entrada (y SPAM).`);
+                mostrarAuthView(); // Volver al login
+            } catch (error) {
+                let msg = 'Error al intentar enviar el enlace.';
+                if (error.code === 'auth/invalid-email') {
+                    msg = 'Correo inválido.';
+                } else if (error.code === 'auth/user-not-found') {
+                    msg = 'Usuario no encontrado. Verifica el correo e intenta de nuevo.';
+                }
+                mostrarNotificacion(`⚠️ Error: ${msg}`);
+            }
+        };
+
+        // --- ESCUCHA DE AUTENTICACIÓN (ANTI-PARPADEO) ---
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Si hay usuario, redirigimos inmediatamente al talonario
+                window.location.href = 'talonario.html'; 
+            } else {
+                // Si NO hay usuario, mostramos la vista principal (Login)
+                mostrarAuthView();
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setupAuthListeners();
+    });
+
 </script>
 </body>
 </html>
-
