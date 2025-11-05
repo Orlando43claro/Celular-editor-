@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalonarioDigital - Acceso Vendedor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+
+/* --- 🎨 ESTILOS CSS (Se mantienen idénticos a los de index.html) --- */
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #84fab0 0%, #1e90ff 100%); 
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+h1 {
+    color: #fff;
+    font-size: clamp(2em, 5vw, 3em);
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin: 0;
+}
+
+#subtituloPrincipal {
+    color: #f0f0f0;
+    font-size: clamp(1em, 3vw, 1.2em);
+    margin-top: 10px;
+}
+
+/* --- VISTA DE LOGIN/TALONARIO (CARD ELEGANTE) --- */
+
+.vista {
+    display: none;
+    width: 90%;
+    max-width: 400px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin: 20px 0;
+}
+
+.vista h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.vista form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Estilo de Inputs con iconos */
+.input-group {
+    position: relative;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #95a5a6;
+    font-size: 1em;
+}
+
+.vista input[type="email"], 
+.vista input[type="password"],
+.vista input[type="text"],
+.vista input[type="number"] {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+.vista input:focus {
+    border-color: #1e90ff;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    outline: none;
+}
+
+.vista button {
+    padding: 12px;
+    background: linear-gradient(45deg, #1e90ff, #007bff);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 700;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-transform: uppercase;
+}
+
+.vista button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#toggleAuth, #olvidoContrasena, #volverLogin {
+    background: none;
+    color: #1e90ff;
+    border: none;
+    font-size: 0.9em;
+    margin-top: 15px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-align: center;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+#toggleAuth:hover, #olvidoContrasena:hover, #volverLogin:hover {
+    color: #007bff;
+}
+
+/* Estilos para notificaciones */
+.notificacion {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #00ff7f;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 255, 127, 0.7);
+    z-index: 2000;
+    display: none;
+    animation: slideIn 0.5s ease forwards, slideOut 0.5s ease 2.5s forwards;
+    font-weight: 600;
+}
+
+/* Media Queries para móviles */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    .vista {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 2em;
+    }
+    .notificacion {
+        top: 10px;
+        right: 10px;
+        font-size: 0.9em;
+    }
+}
+    </style>
+    <link rel="icon" id="favicon" type="image/png" href="icono-talonariodigital.png">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>TalonarioDigital</h1>
+        </div>
+        <p id="subtituloPrincipal">Acceso exclusivo para Vendedores y Administradores</p>
+    </header>
+
+    <div id="authView" class="vista">
+        <h2 id="authTitle">Iniciar Sesión de Vendedor</h2>
+        <form id="authForm">
+            <div class="input-group" id="usernameInputGroup" style="display: none;">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="Nombre de Usuario (Apodo)" autocomplete="username">
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="Correo Electrónico" required autocomplete="email">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Contraseña de Acceso" required autocomplete="current-password">
+            </div>
+
+            <div class="input-group" id="pinInputGroup" style="display: none;">
+                <i class="fas fa-thumbtack"></i>
+                <input type="number" id="vendedorPin" placeholder="PIN de 5 números (para tus clientes)" minlength="5" maxlength="5" pattern="\d{5}" autocomplete="off">
+            </div>
+            
+            <div class="input-group" id="adminCodeInputGroup">
+                <i class="fas fa-key"></i>
+                <input type="password" id="adminCode" placeholder="Código de Vendedor (Gestión)" autocomplete="off">
+            </div>
+            
+            <button type="submit" id="authSubmitBtn">Acceder a Gestión</button>
+        </form>
+        <button id="toggleAuth">¿Aún no tienes cuenta de Vendedor? Regístrate</button>
+        <button id="olvidoContrasena">¿Olvidaste tu Contraseña?</button> 
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="index.html" style="color: #1e90ff; font-size: 0.9em;">Volver a Acceso Cliente (PIN)</a>
+        </div>
+    </div>
+    
+    <div id="recuperacionView" class="vista" style="display: none;">
+        <h2>Recuperar Contraseña</h2>
+        <form id="recuperacionForm">
+             <p style="text-align: center; color: #34495e; margin-bottom: 20px;">Introduce tu correo electrónico para enviarte un enlace de restablecimiento.</p>
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="recuperacionEmail" placeholder="Correo Electrónico" required>
+            </div>
+            <button type="submit" id="recuperacionSubmitBtn">Enviar Enlace</button>
+        </form>
+        <button id="volverLogin">Volver al Login</button>
+    </div>
+
+    <div id="notificacion" class="notificacion" style="display: none;">
+        <p id="mensajeNotificacion"></p>
+    </div>
+
+    
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+    import { 
+        getAuth, 
+        signInWithEmailAndPassword, 
+        createUserWithEmailAndPassword, 
+        sendPasswordResetEmail,
+        updateProfile,
+        onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+    
+    // 🛑 IMPORTACIONES DE FIRESTORE
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+
+    // Tu configuración de Firebase (¡Asegúrate de que esta sea la real!)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDY5KBUwbDwjeCYY7ILXkRB5EJBVoVAmF0", 
+        authDomain: "talonario-rifa.firebaseapp.com",
+        projectId: "talonario-rifa",
+        storageBucket: "talonario-rifa.appspot.com",
+        messagingSenderId: "987446023081",
+        appId: "1:987446023081:web:150e8d7a94975593ac2ab8",
+        measurementId: "G-FWH8F9SVFM"
+    };
+
+    // Inicializar Firebase y Auth
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app); 
+    const db = getFirestore(app); // Inicializar Firestore
+    
+    // 🛑 CRÍTICO: DEFINE TU CÓDIGO SECRETO AQUÍ (Solo tú lo usas para acceder a la gestión)
+    const VENDEDOR_CODE_SECRETO = "RIFA2025"; 
+
+    // Función de notificación simplificada
+    function mostrarNotificacion(mensaje) {
+        const notificacion = document.getElementById('notificacion');
+        const mensajeNotificacion = document.getElementById('mensajeNotificacion');
+        notificacion.style.background = mensaje.includes('Error') || mensaje.includes('⚠️') ? '#ff4757' : '#00ff7f';
+        notificacion.style.boxShadow = mensaje.includes('Error') || mensaje.includes('⚠️') ? '0 0 15px rgba(255, 71, 87, 0.7)' : '0 0 15px rgba(0, 255, 127, 0.7)';
+        
+        mensajeNotificacion.textContent = mensaje;
+        notificacion.style.animation = 'none';
+        notificacion.offsetHeight; 
+        notificacion.style.animation = 'slideIn 0.5s ease forwards, slideOut 0.5s ease 2.5s forwards';
+        notificacion.style.display = 'block';
+        setTimeout(() => { notificacion.style.display = 'none'; }, 3000);
+    }
+
+
+    function setupAuthListeners() {
+        // Elementos de la vista de Autenticación
+        const authView = document.getElementById('authView'); 
+        const authForm = document.getElementById('authForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const usernameInput = document.getElementById('username'); 
+        const usernameInputGroup = document.getElementById('usernameInputGroup'); 
+        const toggleAuthBtn = document.getElementById('toggleAuth');
+        const authTitle = document.getElementById('authTitle');
+        const authSubmitBtn = document.getElementById('authSubmitBtn');
+        const olvidoContrasenaBtn = document.getElementById('olvidoContrasena');
+        const subtituloPrincipal = document.getElementById('subtituloPrincipal');
+        
+        // ELEMENTOS PIN Y ADMIN CODE
+        const adminCodeInput = document.getElementById('adminCode');
+        const adminCodeInputGroup = document.getElementById('adminCodeInputGroup');
+        const vendedorPinInput = document.getElementById('vendedorPin');
+        const pinInputGroup = document.getElementById('pinInputGroup');
+        
+        // Elementos de la vista de Recuperación
+        const recuperacionView = document.getElementById('recuperacionView');
+        const recuperacionForm = document.getElementById('recuperacionForm');
+        const recuperacionEmailInput = document.getElementById('recuperacionEmail');
+        const volverLoginBtn = document.getElementById('volverLogin');
+        
+        let isLogin = true;
+
+        // --- MANEJO DE VISTAS ---
+
+        function mostrarAuthView() {
+            recuperacionView.style.display = 'none';
+            authView.style.display = 'block';
+            subtituloPrincipal.textContent = isLogin ? 'Inicia sesión con tus credenciales de vendedor.' : 'Registra tu cuenta de vendedor y crea tu PIN.';
+        }
+        
+        function mostrarRecuperacionView() {
+            authView.style.display = 'none';
+            recuperacionView.style.display = 'block';
+            subtituloPrincipal.textContent = 'Restablecimiento de Contraseña';
+            recuperacionEmailInput.value = emailInput.value;
+        }
+
+        olvidoContrasenaBtn.onclick = mostrarRecuperacionView;
+        volverLoginBtn.onclick = mostrarAuthView;
+
+        // --- LÓGICA DE LOGIN/REGISTRO TOGGLE ---
+
+        toggleAuthBtn.onclick = () => {
+            isLogin = !isLogin;
+            authTitle.textContent = isLogin ? 'Iniciar Sesión de Vendedor' : 'Registrar Cuenta de Vendedor';
+            authSubmitBtn.textContent = isLogin ? 'Acceder a Gestión' : 'Crear Cuenta y PIN';
+            toggleAuthBtn.textContent = isLogin ? '¿Aún no tienes cuenta de Vendedor? Regístrate' : '¿Ya tienes cuenta? Inicia Sesión de Vendedor';
+            
+            // Nombre de Usuario: Solo en Registro
+            usernameInputGroup.style.display = isLogin ? 'none' : 'flex';
+            usernameInput.required = !isLogin; 
+            usernameInput.value = '';
+
+            // PIN: Solo en Registro
+            pinInputGroup.style.display = isLogin ? 'none' : 'flex';
+            vendedorPinInput.required = !isLogin;
+
+            // Código Admin: Solo en Login
+            adminCodeInputGroup.style.display = isLogin ? 'flex' : 'none';
+            
+            mostrarAuthView(); // Actualizar subtítulo
+        };
+        
+        // Asegurarse de que el campo de Admin se vea al cargar
+        adminCodeInputGroup.style.display = 'flex';
+
+
+        authForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const username = usernameInput.value.trim(); 
+
+            try {
+                if (isLogin) {
+                    // --- LOGIN ---
+                    const adminCode = adminCodeInput.value.trim();
+                    await signInWithEmailAndPassword(auth, email, password);
+                    
+                    // Solo si ingresa el código secreto, se le da acceso a la gestión
+                    if (adminCode === VENDEDOR_CODE_SECRETO) {
+                        mostrarNotificacion("¡Bienvenido, Administrador!");
+                        window.location.href = 'talonario.html'; // ⬅️ VISTA DE GESTIÓN TOTAL
+                    } else {
+                        // Si NO usa el código secreto, se le manda a la vista de Cliente/Solo apartado.
+                        // Esto previene que alguien que robó credenciales acceda a la gestión.
+                        mostrarNotificacion("¡Bienvenido! No se detectó código de gestión.");
+                        // Se almacena el PIN para que cliente.html sepa a quién debe mirar
+                        const pinDocRef = doc(db, "vendedoresPINs", "password_del_vendedor_aqui"); // Esto sería complejo, mejor asumir la redirección a su destino
+                        window.location.href = 'cliente.html'; 
+                    }
+                    
+                } else {
+                    // --- REGISTRO ---
+                    const pin = vendedorPinInput.value.trim();
+                    if (pin.length !== 5) {
+                        mostrarNotificacion(`⚠️ Error: El PIN debe tener exactamente 5 números.`);
+                        return; 
+                    }
+                    if (username.length < 3) {
+                        mostrarNotificacion(`⚠️ Error: El Nombre de Usuario debe tener al menos 3 caracteres.`);
+                        return;
+                    }
+
+                    // 1. Crear usuario en Auth
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    
+                    // 2. Actualizar el perfil
+                    await updateProfile(user, { displayName: username });
+                    
+                    // 3. GUARDAR EL PIN Y DATOS en Firestore para la búsqueda de clientes
+                    const pinRef = doc(db, "vendedoresPINs", pin);
+                    await setDoc(pinRef, {
+                        vendedorUID: user.uid,
+                        vendedorEmail: email,
+                        vendedorDisplayName: username,
+                        vendedorPIN: pin,
+                        vendedorPassword: password // Se usa para que el cliente acceda
+                    });
+                    
+                    mostrarNotificacion("¡Registro exitoso! Iniciando sesión en tu panel de control...");
+                    window.location.href = 'talonario.html'; // Redirige al panel de gestión
+                }
+            } catch (error) {
+                // Manejo de errores
+                let msg = 'Error desconocido. Verifica tu conexión.';
+                if (error.code === 'auth/email-already-in-use') {
+                    msg = 'El correo ya está en uso. ¡Intenta iniciar sesión!';
+                } else if (error.code === 'auth/invalid-email') {
+                    msg = 'Correo inválido.';
+                } else if (error.code === 'auth/weak-password') {
+                    msg = 'Contraseña débil (mín. 6 caracteres).';
+                } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    msg = 'Credenciales incorrectas.';
+                } 
+                mostrarNotificacion(`⚠️ Error: ${msg}`);
+            }
+        };
+        
+        // --- LÓGICA DE RECUPERACIÓN DE CONTRASEÑA (se mantiene) ---
+
+        recuperacionForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const email = recuperacionEmailInput.value;
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                mostrarNotificacion(`✅ Enlace enviado a ${email}. Revisa tu bandeja de entrada (y SPAM).`);
+                mostrarAuthView(); // Volver al login
+            } catch (error) {
+                let msg = 'Error al intentar enviar el enlace.';
+                if (error.code === 'auth/invalid-email') {
+                    msg = 'Correo inválido.';
+                } else if (error.code === 'auth/user-not-found') {
+                    msg = 'Usuario no encontrado. Verifica el correo e intenta de nuevo.';
+                }
+                mostrarNotificacion(`⚠️ Error: ${msg}`);
+            }
+        };
+
+        // --- ESCUCHA DE AUTENTICACIÓN (ANTI-PARPADEO) ---
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                 // Si el usuario ya está logueado y vuelve aquí, se le envía directamente a su panel.
+                 window.location.href = 'talonario.html'; 
+            } else {
+                // Si NO hay usuario, mostramos la vista principal (Login)
+                mostrarAuthView();
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setupAuthListeners();
+    });
+
+</script>
+</body>
+</html>
